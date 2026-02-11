@@ -1,0 +1,59 @@
+<!doctype html>
+<!--
+  ======================================================
+  HTML ENTRY POINT FOR REACT APPLICATION
+  ======================================================
+  File: index.html
+
+  Purpose:
+  - Base HTML file loaded by the browser
+  - Provides a root DOM node for React
+  - Loads the React application via Vite
+
+  IMPORTANT:
+  React itself does NOT create HTML pages.
+  It only renders inside an existing HTML element.
+-->
+
+<html lang="en">
+  <head>
+    <!-- Character encoding for the document -->
+    <meta charset="UTF-8" />
+
+    <!-- Favicon shown in browser tab -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+    <!--
+      Responsive design support
+      Ensures proper scaling on mobile & tablets
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title shown in browser tab -->
+    <title>Book Management System</title>
+  </head>
+
+  <body>
+    <!--
+      ==================================================
+      ROOT ELEMENT
+      ==================================================
+      React mounts the entire application
+      inside this div using ReactDOM.createRoot()
+
+      This div is referenced in main.jsx:
+      document.getElementById("root")
+    -->
+    <div id="root"></div>
+
+    <!--
+      ==================================================
+      MAIN JAVASCRIPT ENTRY
+      ==================================================
+      Loads the React application
+      - type="module" is required for Vite
+      - main.jsx bootstraps React, Router, Context, App
+    -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

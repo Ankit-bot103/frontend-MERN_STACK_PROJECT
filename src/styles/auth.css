@@ -1,0 +1,126 @@
+/*
+  ======================================================
+  AUTHENTICATION PAGE STYLES
+  ======================================================
+  This file contains shared styles for:
+  - Login page
+  - Register page
+
+  Used by:
+  - src/pages/Login.jsx
+  - src/pages/Register.jsx
+
+  Goal:
+  - Center authentication forms
+  - Provide clean, modern UI
+  - Ensure consistent styling across auth pages
+*/
+
+
+/* --------------------------------------------------
+   AUTH PAGE WRAPPER
+   --------------------------------------------------
+   - Takes full screen height (minus navbar)
+   - Centers content both vertically & horizontally
+*/
+.auth-page {
+  min-height: calc(100vh - 70px); /* Adjusts height to account for navbar */
+  display: flex;                 /* Enables flexbox layout */
+  align-items: center;           /* Vertical centering */
+  justify-content: center;       /* Horizontal centering */
+  background: #f5f7fb;           /* Light gray background */
+}
+
+
+/* --------------------------------------------------
+   AUTH CARD (LOGIN / REGISTER BOX)
+   --------------------------------------------------
+   - White card holding the form
+   - Fixed max width for readability
+   - Soft shadow for depth
+*/
+.auth-card {
+  width: 100%;                   /* Responsive on small screens */
+  max-width: 400px;              /* Prevents overly wide form */
+  background: #ffffff;           /* Card background */
+  padding: 30px 35px;            /* Inner spacing */
+  border-radius: 12px;           /* Rounded corners */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+}
+
+
+/* --------------------------------------------------
+   PAGE TITLE
+   --------------------------------------------------
+   Styles the "Login" / "Register" heading
+*/
+.auth-card h2 {
+  text-align: center;            /* Center align title */
+  margin-bottom: 20px;           /* Space below title */
+  font-size: 24px;               /* Title size */
+  color: #222;                   /* Dark text for contrast */
+}
+
+
+/* --------------------------------------------------
+   FORM LAYOUT
+   --------------------------------------------------
+   - Vertical stacking of inputs
+   - Even spacing between fields
+*/
+.auth-card form {
+  display: flex;
+  flex-direction: column;        /* Stack inputs vertically */
+  gap: 14px;                     /* Space between fields */
+}
+
+
+/* --------------------------------------------------
+   INPUT FIELDS
+   --------------------------------------------------
+   Shared styling for:
+   - Email
+   - Username
+   - Password
+*/
+.auth-card input {
+  padding: 10px 12px;            /* Comfortable input size */
+  border-radius: 6px;            /* Rounded input corners */
+  border: 1px solid #d0d5dd;     /* Neutral border */
+  font-size: 14px;               /* Readable text size */
+}
+
+
+/* Input focus effect (UX improvement) */
+.auth-card input:focus {
+  outline: none;                 /* Remove default browser outline */
+  border-color: #4f46e5;         /* Highlight border (primary color) */
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.15); /* Focus glow */
+}
+
+
+/* --------------------------------------------------
+   ERROR MESSAGE
+   --------------------------------------------------
+   Displayed when login or registration fails
+*/
+.auth-error {
+  background: #fee2e2;           /* Light red background */
+  color: #b91c1c;                /* Dark red text */
+  padding: 8px 10px;             /* Inner spacing */
+  border-radius: 6px;            /* Rounded corners */
+  font-size: 13px;               /* Slightly smaller text */
+  text-align: center;            /* Center error message */
+}
+
+
+/* --------------------------------------------------
+   BUTTON STYLING
+   --------------------------------------------------
+   Makes auth buttons full-width and consistent
+*/
+.auth-card .btn {
+  width: 100%;                   /* Full width button */
+  padding: 10px;                 /* Comfortable click area */
+  font-size: 14px;               /* Button text size */
+}

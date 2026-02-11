@@ -1,0 +1,145 @@
+/*
+  ======================================================
+  NAVBAR STYLES
+  ======================================================
+  This file styles the top navigation bar used across
+  the entire application.
+
+  Used by:
+  - src/components/Navbar.jsx
+
+  Purpose:
+  - Provide global navigation
+  - Show login/register or logout actions
+  - Maintain consistent UI across pages
+*/
+
+
+/* --------------------------------------------------
+   NAVBAR WRAPPER
+   --------------------------------------------------
+   Outer container for the navigation bar
+*/
+.navbar {
+  background: #ffffff;            /* White background */
+  border-bottom: 1px solid #e5e7eb; /* Subtle bottom divider */
+  padding: 14px 0;                /* Vertical spacing */
+}
+
+
+/* --------------------------------------------------
+   NAVBAR INNER CONTAINER
+   --------------------------------------------------
+   Centers content and controls layout
+*/
+.navbar-container {
+  max-width: 1100px;              /* Limits navbar width */
+  margin: 0 auto;                 /* Center horizontally */
+  padding: 0 24px;                /* Side padding */
+
+  display: flex;                  /* Flex layout */
+  justify-content: space-between; /* Space between brand & links */
+  align-items: center;            /* Vertical centering */
+}
+
+
+/* --------------------------------------------------
+   BRAND / LOGO
+   --------------------------------------------------
+   Application name on the left
+*/
+.navbar-brand {
+  font-size: 20px;                /* Brand text size */
+  font-weight: 700;               /* Bold */
+  color: #111827;                 /* Dark text */
+  text-decoration: none;          /* Remove underline */
+}
+
+
+/* --------------------------------------------------
+   NAVIGATION LINKS CONTAINER
+   --------------------------------------------------
+   Holds links & buttons on the right
+*/
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;                      /* Space between items */
+}
+
+
+/* --------------------------------------------------
+   NAVIGATION LINKS
+   --------------------------------------------------
+   Home / Books links
+*/
+.nav-link {
+  color: #374151;                 /* Neutral gray */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Hover effect for links */
+.nav-link:hover {
+  color: #4f46e5;                 /* Primary accent color */
+}
+
+
+/* --------------------------------------------------
+   BUTTON BASE STYLE
+   --------------------------------------------------
+   Shared styles for all navbar buttons
+*/
+.btn {
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+
+/* --------------------------------------------------
+   PRIMARY BUTTON
+   --------------------------------------------------
+   Used for Register
+*/
+.btn-primary {
+  background: #4f46e5;            /* Indigo */
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #4338ca;            /* Darker indigo */
+}
+
+
+/* --------------------------------------------------
+   OUTLINE BUTTON
+   --------------------------------------------------
+   Used for Login
+*/
+.btn-outline {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.btn-outline:hover {
+  background: #f3f4f6;            /* Light gray hover */
+}
+
+
+/* --------------------------------------------------
+   LOGOUT BUTTON (NEUTRAL)
+   --------------------------------------------------
+   Logout is NOT destructive, so we avoid red color
+*/
+.btn-logout {
+  background: #374151;            /* Slate gray */
+  color: white;
+}
+
+.btn-logout:hover {
+  background: #1f2937;            /* Darker slate */
+}
