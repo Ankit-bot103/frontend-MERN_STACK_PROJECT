@@ -69,7 +69,9 @@ const Register = () => {
 
     try {
       // Send registration data to backend
-      await api.post("/auth/register", formData);
+      // await api.post("/auth/register", formData);
+      await api.post("/api/auth/register", formData);
+
 
       // Redirect user to login page after successful registration
       navigate("/login");
