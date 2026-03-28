@@ -9,118 +9,145 @@
   Used by:
   - src/pages/Login.jsx
   - src/pages/Register.jsx
-
-  Goal:
-  - Center authentication forms
-  - Provide clean, modern UI
-  - Ensure consistent styling across auth pages
 */
 
 
 /* --------------------------------------------------
    AUTH PAGE WRAPPER
-   --------------------------------------------------
-   - Takes full screen height (minus navbar)
-   - Centers content both vertically & horizontally
-*/
+-------------------------------------------------- */
+
 .auth-page {
-  min-height: calc(100vh - 70px); /* Adjusts height to account for navbar */
-  display: flex;                 /* Enables flexbox layout */
-  align-items: center;           /* Vertical centering */
-  justify-content: center;       /* Horizontal centering */
-  background: #f5f7fb;           /* Light gray background */
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f7fb;
 }
 
 
 /* --------------------------------------------------
-   AUTH CARD (LOGIN / REGISTER BOX)
-   --------------------------------------------------
-   - White card holding the form
-   - Fixed max width for readability
-   - Soft shadow for depth
-*/
+   AUTH CARD
+-------------------------------------------------- */
+
 .auth-card {
-  width: 100%;                   /* Responsive on small screens */
-  max-width: 400px;              /* Prevents overly wide form */
-  background: #ffffff;           /* Card background */
-  padding: 30px 35px;            /* Inner spacing */
-  border-radius: 12px;           /* Rounded corners */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  padding: 30px 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 
 /* --------------------------------------------------
    PAGE TITLE
-   --------------------------------------------------
-   Styles the "Login" / "Register" heading
-*/
+-------------------------------------------------- */
+
 .auth-card h2 {
-  text-align: center;            /* Center align title */
-  margin-bottom: 20px;           /* Space below title */
-  font-size: 24px;               /* Title size */
-  color: #222;                   /* Dark text for contrast */
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #222;
 }
 
 
 /* --------------------------------------------------
    FORM LAYOUT
-   --------------------------------------------------
-   - Vertical stacking of inputs
-   - Even spacing between fields
-*/
+-------------------------------------------------- */
+
 .auth-card form {
   display: flex;
-  flex-direction: column;        /* Stack inputs vertically */
-  gap: 14px;                     /* Space between fields */
+  flex-direction: column;
+  gap: 14px;
 }
 
 
 /* --------------------------------------------------
    INPUT FIELDS
-   --------------------------------------------------
-   Shared styling for:
-   - Email
-   - Username
-   - Password
-*/
+-------------------------------------------------- */
+
 .auth-card input {
-  padding: 10px 12px;            /* Comfortable input size */
-  border-radius: 6px;            /* Rounded input corners */
-  border: 1px solid #d0d5dd;     /* Neutral border */
-  font-size: 14px;               /* Readable text size */
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #d0d5dd;
+  font-size: 14px;
 }
 
 
-/* Input focus effect (UX improvement) */
+/* Input focus effect */
+
 .auth-card input:focus {
-  outline: none;                 /* Remove default browser outline */
-  border-color: #4f46e5;         /* Highlight border (primary color) */
-  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.15); /* Focus glow */
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.15);
 }
 
 
 /* --------------------------------------------------
    ERROR MESSAGE
-   --------------------------------------------------
-   Displayed when login or registration fails
-*/
+-------------------------------------------------- */
+
 .auth-error {
-  background: #fee2e2;           /* Light red background */
-  color: #b91c1c;                /* Dark red text */
-  padding: 8px 10px;             /* Inner spacing */
-  border-radius: 6px;            /* Rounded corners */
-  font-size: 13px;               /* Slightly smaller text */
-  text-align: center;            /* Center error message */
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: center;
+}
+
+
+/* --------------------------------------------------
+   SUCCESS MESSAGE
+-------------------------------------------------- */
+
+.auth-success {
+  background: #dcfce7;
+  color: #166534;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: center;
 }
 
 
 /* --------------------------------------------------
    BUTTON STYLING
-   --------------------------------------------------
-   Makes auth buttons full-width and consistent
-*/
+-------------------------------------------------- */
+
 .auth-card .btn {
-  width: 100%;                   /* Full width button */
-  padding: 10px;                 /* Comfortable click area */
-  font-size: 14px;               /* Button text size */
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+}
+
+
+/* --------------------------------------------------
+   LOADING SPINNER
+-------------------------------------------------- */
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid white;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  animation: spin 0.6s linear infinite;
+}
+
+
+/* Spinner animation */
+
+@keyframes spin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
 }
