@@ -1,109 +1,123 @@
-// Registration page component responsible for creating new users in the system
-
-// React hook for managing form and UI state
+```javascript
+// Import React hook for managing component state
 import { useState } from "react";
 
-// React Router hook for navigation after registration
+// Import React Router hook used to navigate between pages
 import { useNavigate } from "react-router-dom";
 
-// Axios instance for backend API communication
+// Import configured Axios instance for making API requests
 import api from "../api/axios";
 
-// Shared authentication page styles
+// Import CSS styles used for authentication pages
 import "../styles/auth.css";
 
-// Functional component for Register page
+
+// Define the Register component
 const Register = () => {
+
+  // React Router navigation function
   // Used to redirect user after successful registration
   const navigate = useNavigate();
 
-  /*
-    --------------------------------------------------
-    FORM STATE
-    --------------------------------------------------
-    username → chosen username
-    email    → user email
-    password → account password
-  */
+
+  // Form state storing user input values
+  // username → selected username
+  // email → user email address
+  // password → user password
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: ""
   });
 
-  // Error message shown when registration fails
+
+  // State used to store error messages returned by backend
   const [error, setError] = useState("");
 
-  // Loading indicator to prevent multiple submissions
+
+  // Loading state used to disable the button during API call
   const [loading, setLoading] = useState(false);
 
-  /*
-    --------------------------------------------------
-    INPUT CHANGE HANDLER
-    --------------------------------------------------
-    Dynamically updates formData based on input name
-  */
+
+  // Function triggered whenever input field value changes
   const handleChange = (e) => {
+
+    // Update the specific field while keeping other values intact
     setFormData({
-      ...formData,               // Preserve existing values
-      [e.target.name]: e.target.value // Update changed field
+      ...formData,
+      [e.target.name]: e.target.value
     });
+
   };
 
-  /*
-    ==================================================
-    FORM SUBMIT HANDLER
-    ==================================================
-    API: POST /auth/register
 
-    On success:
-    - Redirect user to Login page
-
-    On failure:
-    - Display backend validation error
-  */
+  // Function triggered when registration form is submitted
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page reload
-    setError("");       // Clear previous error
-    setLoading(true);   // Disable button & show loading state
+
+    // Prevent default form submission behavior
+    e.preventDefault();
+
+    // Clear previous error messages
+    setError("");
+
+    // Enable loading state
+    setLoading(true);
 
     try {
-      // Send registration data to backend
-      // await api.post("/auth/register", formData);
+
+      // Send registration request to backend API
+      // Endpoint: POST /auth/register
       await api.post("/auth/register", formData);
 
 
-      // Redirect user to login page after successful registration
-      navigate("/login");
+      // Redirect user to Login page
+      // Pass success message using React Router state
+      navigate("/login", {
+        state: {
+          message: "Registration successful. Please login."
+        }
+      });
+
     } catch (err) {
-      // Display backend error message or fallback text
+
+      // If backend returns error message show it
+      // Otherwise show generic error message
       setError(err.response?.data?.message || "Registration failed");
+
     } finally {
-      // Re-enable button after request completes
+
+      // Disable loading state after request finishes
       setLoading(false);
+
     }
   };
 
-  /*
-    ==================================================
-    JSX UI RENDER
-    ==================================================
-  */
+
+  // JSX returned by the component
   return (
-    // Full-page centered authentication layout
+
+    // Main authentication page container
     <div className="auth-page">
+
+      {/* Card container for register form */}
       <div className="auth-card">
 
-        {/* Page heading */}
+        {/* Page title */}
         <h2>Register</h2>
 
-        {/* Error message (shown only if error exists) */}
-        {error && <p className="auth-error">{error}</p>}
+
+        {/* Display error message if registration fails */}
+        {error && (
+          <p className="auth-error">
+            {error}
+          </p>
+        )}
+
 
         {/* Registration form */}
         <form onSubmit={handleSubmit}>
 
-          {/* Username input */}
+          {/* Username input field */}
           <input
             name="username"
             placeholder="Username"
@@ -112,7 +126,8 @@ const Register = () => {
             required
           />
 
-          {/* Email input */}
+
+          {/* Email input field */}
           <input
             type="email"
             name="email"
@@ -122,7 +137,8 @@ const Register = () => {
             required
           />
 
-          {/* Password input */}
+
+          {/* Password input field */}
           <input
             type="password"
             name="password"
@@ -132,20 +148,30 @@ const Register = () => {
             required
           />
 
-          {/* Submit button (disabled while loading) */}
+
+          {/* Register button */}
+          {/* Disabled while API request is processing */}
           <button
             type="submit"
             className="btn btn-primary"
             disabled={loading}
           >
+
+            {/* Change button text during loading */}
             {loading ? "Registering..." : "Register"}
+
           </button>
 
         </form>
+
       </div>
+
     </div>
+
   );
 };
 
-// Export Register component for routing
+
+// Export Register component so it can be used in routing
 export default Register;
+```
