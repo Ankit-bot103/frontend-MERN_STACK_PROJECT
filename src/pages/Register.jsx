@@ -1,38 +1,24 @@
-// Import React hook for managing component state
 import { useState } from "react";
-
-// Import React Router navigation hook
 import { useNavigate } from "react-router-dom";
-
-// Import Axios API instance
 import api from "../api/axios";
-
-// Import authentication styles
 import "../styles/auth.css";
 
-
-// Register component
 const Register = () => {
 
-  // Navigation function
   const navigate = useNavigate();
 
-  // Form state
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: ""
   });
 
-  // Error state
   const [error, setError] = useState("");
-
-  // Loading state
   const [loading, setLoading] = useState(false);
 
-
-  // Handle input change
   const handleChange = (e) => {
+
+    setError("");
 
     setFormData({
       ...formData,
@@ -41,21 +27,17 @@ const Register = () => {
 
   };
 
-
-  // Handle form submit
   const handleSubmit = async (e) => {
 
     e.preventDefault();
 
     setError("");
-
     setLoading(true);
 
     try {
 
       await api.post("/auth/register", formData);
 
-      // Redirect to login with success message
       navigate("/login", {
         state: {
           message: "Registration successful. Please login."
@@ -74,7 +56,6 @@ const Register = () => {
 
   };
 
-
   return (
 
     <div className="auth-page">
@@ -84,7 +65,9 @@ const Register = () => {
         <h2>Register</h2>
 
         {error && (
-          <p className="auth-error">{error}</p>
+          <p className="auth-error">
+            {error}
+          </p>
         )}
 
         <form onSubmit={handleSubmit}>
@@ -94,6 +77,7 @@ const Register = () => {
             placeholder="Username"
             value={formData.username}
             onChange={handleChange}
+            autoComplete="off"
             required
           />
 
@@ -103,6 +87,7 @@ const Register = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
+            autoComplete="off"
             required
           />
 
@@ -112,6 +97,7 @@ const Register = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
+            autoComplete="new-password"
             required
           />
 
@@ -120,7 +106,14 @@ const Register = () => {
             className="btn btn-primary"
             disabled={loading}
           >
-            {loading ? "Registering..." : "Register"}
+            {loading ? (
+              <>
+                <span className="spinner"></span>
+                Registering...
+              </>
+            ) : (
+              "Register"
+            )}
           </button>
 
         </form>
@@ -133,6 +126,4 @@ const Register = () => {
 
 };
 
-
-// IMPORTANT: default export required by App.jsx
 export default Register;
