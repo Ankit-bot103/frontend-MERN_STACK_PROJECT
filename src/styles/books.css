@@ -8,23 +8,13 @@
   - Add book form
   - Edit / Delete actions
   - Pagination
-
-  Used by:
-  - src/pages/Books.jsx
-
-  Goal:
-  - Clean layout
-  - Readable data table
-  - Professional CRUD UI
 */
 
 
 /* --------------------------------------------------
    GLOBAL RESET
-   --------------------------------------------------
-   Ensures padding & borders are included in width/height
-   Prevents layout overflow issues (especially inputs)
-*/
+-------------------------------------------------- */
+
 *,
 *::before,
 *::after {
@@ -34,11 +24,10 @@
 
 /* --------------------------------------------------
    GLOBAL PAGE STYLES
-   --------------------------------------------------
-   Applies to entire Books page
-*/
+-------------------------------------------------- */
+
 body {
-  background: #f5f7fb;                     /* Light app background */
+  background: #f5f7fb;
   font-family: "Segoe UI", Tahoma, sans-serif;
   margin: 0;
   padding: 0;
@@ -47,19 +36,17 @@ body {
 
 /* --------------------------------------------------
    MAIN PAGE CONTAINER
-   --------------------------------------------------
-   Wraps the entire Books page content
-*/
+-------------------------------------------------- */
+
 .books-container {
-  max-width: 900px;                        /* Limits content width */
-  margin: 40px auto;                       /* Center horizontally */
-  background: #ffffff;                    /* Card-style background */
-  padding: 30px 40px;                     /* Inner spacing */
-  border-radius: 12px;                    /* Rounded edges */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Soft shadow */
+  max-width: 900px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Page title */
 .books-container h2 {
   margin-bottom: 20px;
   font-size: 26px;
@@ -68,30 +55,27 @@ body {
 
 /* --------------------------------------------------
    SEARCH BAR
-   --------------------------------------------------
-   Used for searching books by title or author
-*/
+-------------------------------------------------- */
+
 .search-container {
-  position: relative;                     /* Needed for ❌ button */
+  position: relative;
   margin-bottom: 22px;
 }
 
 .search-input {
   width: 100%;
-  box-sizing: border-box;                 /* ✅ CRITICAL FIX */
-  padding: 10px 38px 10px 12px;           /* Space for clear (❌) */
+  box-sizing: border-box;
+  padding: 10px 38px 10px 12px;
   border-radius: 6px;
   border: 1px solid #d0d5dd;
   font-size: 14px;
   background: #fafafa;
 }
 
-/* Placeholder text color */
 .search-input::placeholder {
   color: #9ca3af;
 }
 
-/* Focus effect for accessibility */
 .search-input:focus {
   outline: none;
   border-color: #4f46e5;
@@ -99,7 +83,6 @@ body {
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
 }
 
-/* Clear search (❌) button */
 .search-clear {
   position: absolute;
   right: 12px;
@@ -114,15 +97,14 @@ body {
 }
 
 .search-clear:hover {
-  color: #ef4444;                         /* Red on hover */
+  color: #ef4444;
 }
 
 
 /* --------------------------------------------------
    ADD BOOK FORM
-   --------------------------------------------------
-   Grid layout for title, author, year & submit button
-*/
+-------------------------------------------------- */
+
 .add-book-form {
   display: grid;
   grid-template-columns: 1.5fr 1.5fr 1fr auto;
@@ -137,10 +119,9 @@ body {
   font-size: 14px;
 }
 
-/* Add Book button */
 .add-book-form button {
   padding: 10px 16px;
-  background: #4f46e5;                    /* Primary color */
+  background: #4f46e5;
   color: white;
   border: none;
   border-radius: 6px;
@@ -155,9 +136,8 @@ body {
 
 /* --------------------------------------------------
    BOOK LIST ROW
-   --------------------------------------------------
-   Each book row (view or edit mode)
-*/
+-------------------------------------------------- */
+
 .book-row {
   display: grid;
   grid-template-columns: 2fr 2fr auto auto;
@@ -167,13 +147,11 @@ body {
   border-bottom: 1px solid #eee;
 }
 
-/* Book title text */
 .book-title {
   font-weight: 600;
   font-size: 15px;
 }
 
-/* Author + year */
 .book-meta {
   color: #555;
   font-size: 14px;
@@ -182,9 +160,8 @@ body {
 
 /* --------------------------------------------------
    EDIT MODE INPUTS
-   --------------------------------------------------
-   Inputs shown when editing a book
-*/
+-------------------------------------------------- */
+
 .book-row input {
   padding: 8px;
   border-radius: 6px;
@@ -195,9 +172,8 @@ body {
 
 /* --------------------------------------------------
    BUTTON STYLES
-   --------------------------------------------------
-   Shared button base + variations
-*/
+-------------------------------------------------- */
+
 .btn {
   padding: 7px 14px;
   border-radius: 6px;
@@ -211,30 +187,25 @@ body {
   opacity: 0.9;
 }
 
-/* Primary button */
 .btn-primary {
   background: #4f46e5;
   color: white;
 }
 
-/* Edit button */
 .btn-edit {
   background: #facc15;
 }
 
-/* Delete button */
 .btn-delete {
   background: #ef4444;
   color: white;
 }
 
-/* Save button */
 .btn-save {
   background: #22c55e;
   color: white;
 }
 
-/* Cancel button */
 .btn-cancel {
   background: #9ca3af;
   color: white;
@@ -243,9 +214,8 @@ body {
 
 /* --------------------------------------------------
    PAGINATION
-   --------------------------------------------------
-   Controls page navigation at bottom
-*/
+-------------------------------------------------- */
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -262,15 +232,56 @@ body {
   font-size: 13px;
 }
 
-/* Active page */
 .pagination button.active {
   background: #4f46e5;
   color: white;
   border-color: #4f46e5;
 }
 
-/* Disabled prev/next */
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+
+/* --------------------------------------------------
+   BOOKS PAGE LOADING STATE
+-------------------------------------------------- */
+
+.books-loading {
+  height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+  font-size: 14px;
+}
+
+
+/* Spinner used during pagination */
+
+.spinner-dark {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-bottom: 10px;
+}
+
+
+/* Spinner animation */
+
+@keyframes spin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
 }
