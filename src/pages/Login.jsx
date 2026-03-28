@@ -1,27 +1,40 @@
-// Login page component responsible for authenticating users and issuing JWT tokens
-
-// React hook for managing form state
+```javascript
+// Import React hook used to manage component state
 import { useState } from "react";
 
-// React Router hook for programmatic navigation
-import { useNavigate } from "react-router-dom";
+// Import React Router hooks
+// useNavigate → used to redirect user after login
+// useLocation → used to read messages passed from previous page
+import { useNavigate, useLocation } from "react-router-dom";
 
-// Axios instance for backend API calls
+// Import Axios API instance configured with backend base URL
 import api from "../api/axios";
 
-// Custom authentication context hook
+// Import authentication context hook
+// This allows storing JWT token and role globally
 import { useAuth } from "../context/AuthContext";
 
-// Shared authentication page styles
+// Import shared CSS styles for authentication pages
 import "../styles/auth.css";
 
-// Functional component for Login page
+
+// Functional component representing the Login page
 const Login = () => {
-  // Get login function from AuthContext
+
+  // Extract login function from AuthContext
+  // This function saves token and role globally
   const { login } = useAuth();
 
+  // React Router navigation function
   // Used to redirect user after successful login
   const navigate = useNavigate();
+
+  // Access location object to read messages passed from previous page
+  const location = useLocation();
+
+  // Success message passed from Register page
+  const registerSuccessMessage = location.state?.message;
+
 
   /*
     --------------------------------------------------
@@ -35,21 +48,31 @@ const Login = () => {
     password: ""
   });
 
-  // Error message state (shown on invalid login)
+
+  // Error message state used to display login errors
   const [error, setError] = useState("");
+
+
+  // Loading state used to disable button during API request
+  const [loading, setLoading] = useState(false);
+
 
   /*
     --------------------------------------------------
     INPUT CHANGE HANDLER
     --------------------------------------------------
-    Updates formData dynamically based on input name
+    Updates formData dynamically when user types
   */
   const handleChange = (e) => {
+
+    // Update specific field while preserving other values
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+
   };
+
 
   /*
     ==================================================
@@ -58,33 +81,61 @@ const Login = () => {
     API: POST /auth/login
 
     On success:
-    - Save JWT token & role in AuthContext
-    - Redirect user to Books page
+    - Save JWT token in AuthContext
+    - Redirect to Books page
 
     On failure:
     - Show error message
   */
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page refresh
-    setError("");       // Clear previous errors
+
+    // Prevent default browser form submission behavior
+    e.preventDefault();
+
+    // Clear previous error message
+    setError("");
+
+    // Enable loading state
+    setLoading(true);
 
     try {
-      // Send login request to backend
+
+      // Send login request to backend API
       const res = await api.post("/auth/login", {
+
+        // Send email from identifier field
         email: formData.identifier,
+
+        // Send password entered by user
         password: formData.password
       });
 
-      // Store token and role globally using AuthContext
+
+      // Store JWT token and role globally using AuthContext
       login(res.data.token, res.data.user?.role || "user");
 
-      // Redirect to Books page after successful login
-      navigate("/books");
+
+      // Redirect user to Books page with success message
+      navigate("/books", {
+        state: {
+          message: "Login successful"
+        }
+      });
+
     } catch (err) {
-      // Display backend error or fallback message
+
+      // Display backend error message if available
+      // Otherwise show default login error message
       setError(err.response?.data?.message || "Invalid email or password");
+
+    } finally {
+
+      // Disable loading state after API call finishes
+      setLoading(false);
+
     }
   };
+
 
   /*
     ==================================================
@@ -92,20 +143,37 @@ const Login = () => {
     ==================================================
   */
   return (
-    // Full-page centered authentication layout
+
+    // Main authentication page container
     <div className="auth-page">
+
+      {/* Card container for login form */}
       <div className="auth-card">
 
-        {/* Page heading */}
+        {/* Page title */}
         <h2>Login</h2>
 
-        {/* Error message (shown only if error exists) */}
-        {error && <p className="auth-error">{error}</p>}
+
+        {/* Show success message if redirected from Register page */}
+        {registerSuccessMessage && (
+          <p className="auth-success">
+            {registerSuccessMessage}
+          </p>
+        )}
+
+
+        {/* Display login error if authentication fails */}
+        {error && (
+          <p className="auth-error">
+            {error}
+          </p>
+        )}
+
 
         {/* Login form */}
         <form onSubmit={handleSubmit}>
 
-          {/* Email input */}
+          {/* Email input field */}
           <input
             name="identifier"
             type="email"
@@ -115,7 +183,8 @@ const Login = () => {
             required
           />
 
-          {/* Password input */}
+
+          {/* Password input field */}
           <input
             name="password"
             type="password"
@@ -125,16 +194,30 @@ const Login = () => {
             required
           />
 
+
           {/* Submit button */}
-          <button className="btn btn-primary" type="submit">
-            Login
+          {/* Disabled when loading is true */}
+          <button
+            className="btn btn-primary"
+            type="submit"
+            disabled={loading}
+          >
+
+            {/* Button text changes during API request */}
+            {loading ? "Logging in..." : "Login"}
+
           </button>
 
         </form>
+
       </div>
+
     </div>
+
   );
 };
 
-// Export Login component for routing
+
+// Export Login component so it can be used in routing
 export default Login;
+```
