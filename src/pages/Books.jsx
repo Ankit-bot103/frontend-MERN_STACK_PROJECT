@@ -1,4 +1,3 @@
-```javascript
 // Import React hooks used for state management and lifecycle events
 import { useEffect, useState } from "react";
 
@@ -6,79 +5,44 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 // Import Axios API instance configured with baseURL and JWT interceptor
-// This ensures Authorization token is automatically attached to requests
 import api from "../api/axios";
 
 // Import CSS styles specific to Books page
 import "../styles/books.css";
 
-
-/*
-  ======================================================
-  BOOKS PAGE COMPONENT
-  ======================================================
-  Responsibilities:
-  - Fetch books from backend
-  - Display books list
-  - Add new books
-  - Edit existing books
-  - Delete books
-  - Support pagination
-  - Support search
-  - Show login success message
-*/
 const Books = () => {
 
-  // React Router location object
-  // Used to read messages passed during navigation
+  // React Router location object used to read navigation state
   const location = useLocation();
 
-  // Message passed from login page
+  // Success message passed from login page
   const successMessage = location.state?.message;
 
 
-  /*
-  ======================================================
-  STATE: BOOK DATA
-  ======================================================
-  books   → list of books returned from backend
-  loading → indicates whether data is currently loading
-  */
+  // ================================
+  // BOOK DATA STATE
+  // ================================
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
 
-  /*
-  ======================================================
-  STATE: PAGINATION
-  ======================================================
-  page        → current page number
-  totalPages → total pages returned by backend
-  limit       → number of books per page
-  */
+  // ================================
+  // PAGINATION STATE
+  // ================================
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
-  // Fixed number of books shown per page
   const limit = 5;
 
 
-  /*
-  ======================================================
-  STATE: SEARCH
-  ======================================================
-  search → text entered by user for filtering books
-  */
+  // ================================
+  // SEARCH STATE
+  // ================================
   const [search, setSearch] = useState("");
 
 
-  /*
-  ======================================================
-  STATE: EDIT MODE
-  ======================================================
-  editingId → ID of book currently being edited
-  editData  → temporary data used while editing
-  */
+  // ================================
+  // EDIT MODE STATE
+  // ================================
   const [editingId, setEditingId] = useState(null);
 
   const [editData, setEditData] = useState({
@@ -88,12 +52,9 @@ const Books = () => {
   });
 
 
-  /*
-  ======================================================
-  STATE: CREATE FORM
-  ======================================================
-  formData → values entered in Add Book form
-  */
+  // ================================
+  // CREATE BOOK FORM STATE
+  // ================================
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -101,43 +62,27 @@ const Books = () => {
   });
 
 
-  /*
-  ======================================================
-  FUNCTION: FETCH BOOKS
-  ======================================================
-  - Fetch books from backend
-  - Includes pagination & search parameters
-  - Updates UI state
-  */
+  // ================================
+  // FETCH BOOKS FUNCTION
+  // ================================
   const fetchBooks = async (pageNumber = 1) => {
 
     try {
 
-      // Enable loading state while API request runs
       setLoading(true);
 
-      // Send GET request with pagination and search query
-      const res = await api.get(
-        `/books?page=${pageNumber}&limit=${limit}&search=${search}`
-      );
+      const res = await api.get(`/books?page=${pageNumber}&limit=${limit}&search=${search}`);
 
-      // Update books list with response data
       setBooks(res.data.data);
-
-      // Update current page number
       setPage(res.data.page);
-
-      // Update total pages available
       setTotalPages(res.data.totalPages);
 
     } catch (err) {
 
-      // Show error alert if books cannot be fetched
       alert("Failed to load books");
 
     } finally {
 
-      // Disable loading state after request completes
       setLoading(false);
 
     }
@@ -145,14 +90,9 @@ const Books = () => {
   };
 
 
-  /*
-  ======================================================
-  useEffect
-  ======================================================
-  Automatically fetch books when:
-  - page changes
-  - search text changes
-  */
+  // ================================
+  // LOAD BOOKS WHEN PAGE OR SEARCH CHANGES
+  // ================================
   useEffect(() => {
 
     fetchBooks(page);
@@ -160,78 +100,51 @@ const Books = () => {
   }, [page, search]);
 
 
-  /*
-  ======================================================
-  FUNCTION: CREATE BOOK
-  ======================================================
-  - Sends new book data to backend
-  - Clears form
-  - Reloads books list
-  */
+  // ================================
+  // CREATE BOOK
+  // ================================
   const handleCreate = async (e) => {
 
-    // Prevent page refresh
     e.preventDefault();
 
-    // Send POST request to create book
     await api.post("/books", {
       ...formData,
-
-      // Convert year string to number
       year: Number(formData.year)
     });
 
-    // Reset form fields
     setFormData({
       title: "",
       author: "",
       year: ""
     });
 
-    // Return to first page after adding book
     setPage(1);
-
-    // Reload books list
     fetchBooks(1);
 
   };
 
 
-  /*
-  ======================================================
-  FUNCTION: DELETE BOOK
-  ======================================================
-  - Confirm deletion
-  - Send DELETE request
-  - Reload books list
-  */
+  // ================================
+  // DELETE BOOK
+  // ================================
   const handleDelete = async (id) => {
 
-    // Confirm deletion before proceeding
     if (!window.confirm("Delete this book?")) return;
 
-    // Send DELETE request
     await api.delete(`/books/${id}`);
 
-    // Reload books list
     fetchBooks(page);
 
   };
 
 
-  /*
-  ======================================================
-  EDIT MODE FUNCTIONS
-  ======================================================
-  */
-
-  // Enable editing mode for selected book
+  // ================================
+  // START EDIT MODE
+  // ================================
   const startEdit = (book) => {
 
-    // Store ID of book being edited
     setEditingId(book._id);
 
-    // Populate edit form with existing book data
     setEditData({
       title: book.title,
       author: book.author,
@@ -241,10 +154,11 @@ const Books = () => {
   };
 
 
-  // Cancel editing mode
+  // ================================
+  // CANCEL EDIT
+  // ================================
   const cancelEdit = () => {
 
-    // Reset editing state
     setEditingId(null);
 
     setEditData({
@@ -256,30 +170,25 @@ const Books = () => {
   };
 
 
-  // Save edited book data
+  // ================================
+  // SAVE EDIT
+  // ================================
   const saveEdit = async (id) => {
 
-    // Send PUT request to update book
     await api.put(`/books/${id}`, {
       ...editData,
       year: Number(editData.year)
     });
 
-    // Exit edit mode
     cancelEdit();
-
-    // Reload books list
     fetchBooks(page);
 
   };
 
 
-  /*
-  ======================================================
-  LOADING UI
-  ======================================================
-  Show loading text while books are being fetched
-  */
+  // ================================
+  // LOADING UI
+  // ================================
   if (loading) {
 
     return <p>Loading...</p>;
@@ -287,44 +196,33 @@ const Books = () => {
   }
 
 
-  /*
-  ======================================================
-  JSX UI RENDER
-  ======================================================
-  */
+  // ================================
+  // PAGE UI
+  // ================================
   return (
 
     <div className="books-container">
 
-      {/* Page title */}
       <h2>Books</h2>
 
-
-      {/* Show login success message */}
       {successMessage && (
-        <p className="auth-success">
-          {successMessage}
-        </p>
+        <p className="auth-success">{successMessage}</p>
       )}
 
 
-      {/* ================= SEARCH BAR ================= */}
+      {/* SEARCH BAR */}
       <div className="search-container">
 
-        {/* Search input field */}
         <input
           className="search-input"
           placeholder="Search by title or author..."
           value={search}
-
-          // Update search state when user types
           onChange={(e) => {
             setSearch(e.target.value);
             setPage(1);
           }}
         />
 
-        {/* Clear search button */}
         {search && (
           <button
             className="search-clear"
@@ -341,52 +239,37 @@ const Books = () => {
       </div>
 
 
-      {/* ================= ADD BOOK FORM ================= */}
+      {/* ADD BOOK FORM */}
       <form className="add-book-form" onSubmit={handleCreate}>
 
-        {/* Title input */}
         <input
           placeholder="Title"
           value={formData.title}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              title: e.target.value
-            })
+            setFormData({ ...formData, title: e.target.value })
           }
           required
         />
 
-
-        {/* Author input */}
         <input
           placeholder="Author"
           value={formData.author}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              author: e.target.value
-            })
+            setFormData({ ...formData, author: e.target.value })
           }
           required
         />
 
-
-        {/* Year input */}
         <input
           type="number"
           placeholder="Year"
           value={formData.year}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              year: e.target.value
-            })
+            setFormData({ ...formData, year: e.target.value })
           }
           required
         />
 
-        {/* Submit button */}
         <button className="btn btn-primary">
           Add Book
         </button>
@@ -394,7 +277,7 @@ const Books = () => {
       </form>
 
 
-      {/* ================= BOOK LIST ================= */}
+      {/* BOOK LIST */}
       {books.length === 0 ? (
 
         <p>No books found</p>
@@ -405,49 +288,31 @@ const Books = () => {
 
           <div key={book._id} className="book-row">
 
-            {/* If book is in edit mode */}
             {editingId === book._id ? (
 
               <>
-
-                {/* Editable title field */}
                 <input
                   value={editData.title}
                   onChange={(e) =>
-                    setEditData({
-                      ...editData,
-                      title: e.target.value
-                    })
+                    setEditData({ ...editData, title: e.target.value })
                   }
                 />
 
-
-                {/* Editable author field */}
                 <input
                   value={editData.author}
                   onChange={(e) =>
-                    setEditData({
-                      ...editData,
-                      author: e.target.value
-                    })
+                    setEditData({ ...editData, author: e.target.value })
                   }
                 />
 
-
-                {/* Editable year field */}
                 <input
                   type="number"
                   value={editData.year}
                   onChange={(e) =>
-                    setEditData({
-                      ...editData,
-                      year: e.target.value
-                    })
+                    setEditData({ ...editData, year: e.target.value })
                   }
                 />
 
-
-                {/* Save edit button */}
                 <button
                   className="btn btn-save"
                   onClick={() => saveEdit(book._id)}
@@ -455,8 +320,6 @@ const Books = () => {
                   Save
                 </button>
 
-
-                {/* Cancel edit button */}
                 <button
                   className="btn btn-cancel"
                   onClick={cancelEdit}
@@ -469,20 +332,12 @@ const Books = () => {
             ) : (
 
               <>
+                <div className="book-title">{book.title}</div>
 
-                {/* Display book title */}
-                <div className="book-title">
-                  {book.title}
-                </div>
-
-
-                {/* Display author and year */}
                 <div className="book-meta">
                   {book.author} ({book.year})
                 </div>
 
-
-                {/* Edit button */}
                 <button
                   className="btn btn-edit"
                   onClick={() => startEdit(book)}
@@ -490,15 +345,12 @@ const Books = () => {
                   Edit
                 </button>
 
-
-                {/* Delete button */}
                 <button
                   className="btn btn-delete"
                   onClick={() => handleDelete(book._id)}
                 >
                   Delete
                 </button>
-
               </>
 
             )}
@@ -510,12 +362,11 @@ const Books = () => {
       )}
 
 
-      {/* ================= PAGINATION ================= */}
+      {/* PAGINATION */}
       {totalPages > 1 && (
 
         <div className="pagination">
 
-          {/* Previous page button */}
           <button
             disabled={page === 1}
             onClick={() => setPage(page - 1)}
@@ -523,8 +374,6 @@ const Books = () => {
             ◀ Prev
           </button>
 
-
-          {/* Page number buttons */}
           {[...Array(totalPages)].map((_, i) => (
 
             <button
@@ -537,8 +386,6 @@ const Books = () => {
 
           ))}
 
-
-          {/* Next page button */}
           <button
             disabled={page === totalPages}
             onClick={() => setPage(page + 1)}
@@ -556,7 +403,4 @@ const Books = () => {
 
 };
 
-
-// Export Books component
 export default Books;
-```
