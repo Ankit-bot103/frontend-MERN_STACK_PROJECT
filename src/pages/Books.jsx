@@ -156,7 +156,12 @@ const Books = () => {
 
   if (loading) {
 
-    return <p>Loading...</p>;
+    return (
+      <div className="books-loading">
+        <div className="spinner-dark"></div>
+        <p>Loading books...</p>
+      </div>
+    );
 
   }
 
