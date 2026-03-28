@@ -1,48 +1,24 @@
-// Import React hooks used for state management and lifecycle events
 import { useEffect, useState } from "react";
-
-// Import React Router hook used to read navigation state (messages passed from previous page)
 import { useLocation } from "react-router-dom";
-
-// Import Axios API instance configured with baseURL and JWT interceptor
 import api from "../api/axios";
-
-// Import CSS styles specific to Books page
 import "../styles/books.css";
 
 const Books = () => {
 
-  // React Router location object used to read navigation state
   const location = useLocation();
-
-  // Success message passed from login page
   const successMessage = location.state?.message;
 
+  const [showMessage, setShowMessage] = useState(true);
 
-  // ================================
-  // BOOK DATA STATE
-  // ================================
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
-  // ================================
-  // PAGINATION STATE
-  // ================================
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 5;
 
-
-  // ================================
-  // SEARCH STATE
-  // ================================
   const [search, setSearch] = useState("");
 
-
-  // ================================
-  // EDIT MODE STATE
-  // ================================
   const [editingId, setEditingId] = useState(null);
 
   const [editData, setEditData] = useState({
@@ -51,10 +27,6 @@ const Books = () => {
     year: ""
   });
 
-
-  // ================================
-  // CREATE BOOK FORM STATE
-  // ================================
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -62,16 +34,30 @@ const Books = () => {
   });
 
 
-  // ================================
-  // FETCH BOOKS FUNCTION
-  // ================================
+  useEffect(() => {
+
+    if (successMessage) {
+
+      const timer = setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+
+    }
+
+  }, [successMessage]);
+
+
   const fetchBooks = async (pageNumber = 1) => {
 
     try {
 
       setLoading(true);
 
-      const res = await api.get(`/books?page=${pageNumber}&limit=${limit}&search=${search}`);
+      const res = await api.get(
+        `/books?page=${pageNumber}&limit=${limit}&search=${search}`
+      );
 
       setBooks(res.data.data);
       setPage(res.data.page);
@@ -90,9 +76,6 @@ const Books = () => {
   };
 
 
-  // ================================
-  // LOAD BOOKS WHEN PAGE OR SEARCH CHANGES
-  // ================================
   useEffect(() => {
 
     fetchBooks(page);
@@ -100,9 +83,6 @@ const Books = () => {
   }, [page, search]);
 
 
-  // ================================
-  // CREATE BOOK
-  // ================================
   const handleCreate = async (e) => {
 
     e.preventDefault();
@@ -124,9 +104,6 @@ const Books = () => {
   };
 
 
-  // ================================
-  // DELETE BOOK
-  // ================================
   const handleDelete = async (id) => {
 
     if (!window.confirm("Delete this book?")) return;
@@ -138,9 +115,6 @@ const Books = () => {
   };
 
 
-  // ================================
-  // START EDIT MODE
-  // ================================
   const startEdit = (book) => {
 
     setEditingId(book._id);
@@ -154,9 +128,6 @@ const Books = () => {
   };
 
 
-  // ================================
-  // CANCEL EDIT
-  // ================================
   const cancelEdit = () => {
 
     setEditingId(null);
@@ -170,9 +141,6 @@ const Books = () => {
   };
 
 
-  // ================================
-  // SAVE EDIT
-  // ================================
   const saveEdit = async (id) => {
 
     await api.put(`/books/${id}`, {
@@ -186,9 +154,6 @@ const Books = () => {
   };
 
 
-  // ================================
-  // LOADING UI
-  // ================================
   if (loading) {
 
     return <p>Loading...</p>;
@@ -196,21 +161,19 @@ const Books = () => {
   }
 
 
-  // ================================
-  // PAGE UI
-  // ================================
   return (
 
     <div className="books-container">
 
       <h2>Books</h2>
 
-      {successMessage && (
-        <p className="auth-success">{successMessage}</p>
+      {successMessage && showMessage && (
+        <p className="auth-success">
+          {successMessage}
+        </p>
       )}
 
 
-      {/* SEARCH BAR */}
       <div className="search-container">
 
         <input
@@ -239,7 +202,6 @@ const Books = () => {
       </div>
 
 
-      {/* ADD BOOK FORM */}
       <form className="add-book-form" onSubmit={handleCreate}>
 
         <input
@@ -277,7 +239,6 @@ const Books = () => {
       </form>
 
 
-      {/* BOOK LIST */}
       {books.length === 0 ? (
 
         <p>No books found</p>
@@ -326,7 +287,6 @@ const Books = () => {
                 >
                   Cancel
                 </button>
-
               </>
 
             ) : (
@@ -352,7 +312,6 @@ const Books = () => {
                   Delete
                 </button>
               </>
-
             )}
 
           </div>
@@ -362,7 +321,6 @@ const Books = () => {
       )}
 
 
-      {/* PAGINATION */}
       {totalPages > 1 && (
 
         <div className="pagination">
