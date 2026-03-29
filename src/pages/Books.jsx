@@ -1,59 +1,63 @@
-// Import React hooks used for state management and lifecycle
+// Import React hooks used for managing state and lifecycle
 import { useEffect, useState } from "react";
 
-// Import router hook to access navigation state (used for success message)
+// Import router hook to access navigation state
+// This allows us to read success messages passed during navigation
 import { useLocation } from "react-router-dom";
 
-// Import preconfigured axios instance used for API requests
+// Import Axios instance configured with baseURL and JWT interceptor
 import api from "../api/axios";
 
-// Import CSS styles for Books page
+// Import styles specific to the Books page
 import "../styles/books.css";
 
 
-// Main Books component
+// Books component definition
 const Books = () => {
 
-  // Get navigation state (used to read login success message)
+  /*
+  =====================================================
+  READ SUCCESS MESSAGE FROM NAVIGATION STATE
+  =====================================================
+  When user logs in successfully we pass a message
+  from Login page → Books page using React Router state
+  */
   const location = useLocation();
 
-  // Extract success message passed from login page
   const successMessage = location.state?.message;
 
 
   /*
   =====================================================
-  SUCCESS MESSAGE STATE
+  SUCCESS MESSAGE VISIBILITY STATE
   =====================================================
-  Controls visibility of login success message
+  This allows the success message to disappear automatically
+  after a few seconds.
   */
   const [showMessage, setShowMessage] = useState(true);
 
 
   /*
   =====================================================
-  PRODUCT TOUR STATE (LOCAL STORAGE)
+  PRODUCT TOUR STATE
   =====================================================
-  This ensures the onboarding tour runs only once.
+  The onboarding tour runs only once using localStorage
   */
   const [tourStep, setTourStep] = useState(() => {
 
-    // Read stored value from browser
     const completed = localStorage.getItem("booksTourCompleted");
 
-    // If tour already completed skip it
     if (completed === "true") {
       return 999;
     }
 
-    // Otherwise start from first step
     return 0;
 
   });
 
 
   /*
-  List of instructions displayed during the tour
+  Instructions displayed during onboarding tour
   */
   const tourSteps = [
     "Add a new book using Title, Author and Year fields.",
@@ -68,8 +72,11 @@ const Books = () => {
   =====================================================
   BOOK DATA STATE
   =====================================================
+  books → stores books returned from backend
+  loading → controls loading spinner/skeleton
   */
   const [books, setBooks] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
 
@@ -77,9 +84,13 @@ const Books = () => {
   =====================================================
   PAGINATION STATE
   =====================================================
+  page → current page
+  totalPages → pages returned from backend
   */
   const [page, setPage] = useState(1);
+
   const [totalPages, setTotalPages] = useState(1);
+
   const limit = 5;
 
 
@@ -153,7 +164,9 @@ const Books = () => {
       );
 
       setBooks(res.data.data);
+
       setPage(res.data.page);
+
       setTotalPages(res.data.totalPages);
 
     } catch (err) {
@@ -170,7 +183,7 @@ const Books = () => {
 
 
   /*
-  Load books when page or search changes
+  Load books whenever page or search changes
   */
   useEffect(() => {
 
@@ -193,9 +206,14 @@ const Books = () => {
       year: Number(formData.year)
     });
 
-    setFormData({ title: "", author: "", year: "" });
+    setFormData({
+      title: "",
+      author: "",
+      year: ""
+    });
 
     setPage(1);
+
     fetchBooks(1);
 
   };
@@ -244,7 +262,11 @@ const Books = () => {
 
     setEditingId(null);
 
-    setEditData({ title: "", author: "", year: "" });
+    setEditData({
+      title: "",
+      author: "",
+      year: ""
+    });
 
   };
 
@@ -262,6 +284,7 @@ const Books = () => {
     });
 
     cancelEdit();
+
     fetchBooks(page);
 
   };
@@ -286,7 +309,7 @@ const Books = () => {
 
   /*
   =====================================================
-  MAIN UI
+  MAIN PAGE UI
   =====================================================
   */
   return (
@@ -296,70 +319,9 @@ const Books = () => {
       <h2>Books</h2>
 
 
-      {/* PRODUCT TOUR OVERLAY */}
-      {tourStep < tourSteps.length && (
-
-        <div className="books-tour">
-
-          <div className="tour-card">
-
-            <h3>📘 Books Tour</h3>
-
-            <p>{tourSteps[tourStep]}</p>
-
-            <div className="tour-actions">
-
-              {tourStep > 0 && (
-                <button
-                  className="btn btn-cancel"
-                  onClick={() => setTourStep(tourStep - 1)}
-                >
-                  Back
-                </button>
-              )}
-
-              {tourStep < tourSteps.length - 1 ? (
-
-                <button
-                  className="btn btn-primary"
-                  onClick={() => setTourStep(tourStep + 1)}
-                >
-                  Next
-                </button>
-
-              ) : (
-
-                <button
-                  className="btn btn-save"
-                  onClick={() => {
-
-                    // Save completion flag
-                    localStorage.setItem("booksTourCompleted", "true");
-
-                    // End the tour
-                    setTourStep(tourSteps.length);
-
-                  }}
-                >
-                  Finish
-                </button>
-
-              )}
-
-            </div>
-
-          </div>
-
-        </div>
-
-      )}
-
-
       {/* SUCCESS MESSAGE */}
       {successMessage && showMessage && (
-        <p className="auth-success">
-          {successMessage}
-        </p>
+        <p className="auth-success">{successMessage}</p>
       )}
 
 
@@ -425,21 +387,27 @@ const Books = () => {
 
         <div key={book._id} className="book-row">
 
-          <div className="book-title">{book.title}</div>
+          {/* Book title */}
+          <div className="book-title">
+            {book.title}
+          </div>
 
+          {/* Book author + year */}
           <div className="book-meta">
             {book.author} ({book.year})
           </div>
 
+          {/* Edit button */}
           <button
-            className={`btn btn-edit ${tourStep === 1 ? "tour-highlight" : ""}`}
+            className="btn btn-edit"
             onClick={() => startEdit(book)}
           >
             Edit
           </button>
 
+          {/* Delete button */}
           <button
-            className={`btn btn-delete ${tourStep === 2 ? "tour-highlight" : ""}`}
+            className="btn btn-delete"
             onClick={() => handleDelete(book._id)}
           >
             Delete
@@ -453,7 +421,7 @@ const Books = () => {
       {/* PAGINATION */}
       {totalPages > 1 && (
 
-        <div className={`pagination ${tourStep === 4 ? "tour-highlight" : ""}`}>
+        <div className="pagination">
 
           <button
             disabled={page === 1}
@@ -492,5 +460,5 @@ const Books = () => {
 };
 
 
-// Export component for routing
+// Export component so routing can use it
 export default Books;
