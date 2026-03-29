@@ -214,8 +214,8 @@ Local: http://localhost:5173
 ------------------------------------------------------------------------
 
 # 💡 Live Deployment Links
-Client/React/Ui App:- https://mern-stack-client-app.vercel.app
-Server/Express/Backend App:- https://mern-stack-server-app-nischalaremanda.onrender.com
+-  Client/React/Ui App:- https://mern-stack-client-app.vercel.app
+-  Server/Express/Backend App:- https://mern-stack-server-app-nischalaremanda.onrender.com
 
 
 ------------------------------------------------------------------------
