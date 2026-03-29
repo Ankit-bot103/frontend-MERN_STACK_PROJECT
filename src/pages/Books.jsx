@@ -21,20 +21,40 @@ const Books = () => {
   const successMessage = location.state?.message;
 
 
-  // State used to control visibility of success message
+  /*
+  =====================================================
+  SUCCESS MESSAGE STATE
+  =====================================================
+  Controls visibility of login success message
+  */
   const [showMessage, setShowMessage] = useState(true);
 
 
   /*
   =====================================================
-  PRODUCT TOUR STATE
+  PRODUCT TOUR STATE (LOCAL STORAGE)
   =====================================================
-  tourStep → controls which step of the onboarding tour is active
+  This ensures the onboarding tour runs only once.
   */
-  const [tourStep, setTourStep] = useState(0);
+  const [tourStep, setTourStep] = useState(() => {
+
+    // Read stored value from browser
+    const completed = localStorage.getItem("booksTourCompleted");
+
+    // If tour already completed skip it
+    if (completed === "true") {
+      return 999;
+    }
+
+    // Otherwise start from first step
+    return 0;
+
+  });
 
 
-  // List of steps shown in the guided product tour
+  /*
+  List of instructions displayed during the tour
+  */
   const tourSteps = [
     "Add a new book using Title, Author and Year fields.",
     "Click Edit to modify an existing book.",
@@ -48,8 +68,6 @@ const Books = () => {
   =====================================================
   BOOK DATA STATE
   =====================================================
-  books → stores list of books returned from backend
-  loading → controls loading spinner
   */
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -59,9 +77,6 @@ const Books = () => {
   =====================================================
   PAGINATION STATE
   =====================================================
-  page → current page number
-  totalPages → total pages returned by backend
-  limit → books per page
   */
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -72,7 +87,6 @@ const Books = () => {
   =====================================================
   SEARCH STATE
   =====================================================
-  search → text entered by user for filtering books
   */
   const [search, setSearch] = useState("");
 
@@ -81,8 +95,6 @@ const Books = () => {
   =====================================================
   EDIT MODE STATE
   =====================================================
-  editingId → ID of book currently being edited
-  editData → editable book values
   */
   const [editingId, setEditingId] = useState(null);
 
@@ -97,7 +109,6 @@ const Books = () => {
   =====================================================
   CREATE FORM STATE
   =====================================================
-  formData → values entered in Add Book form
   */
   const [formData, setFormData] = useState({
     title: "",
@@ -110,8 +121,6 @@ const Books = () => {
   =====================================================
   AUTO HIDE SUCCESS MESSAGE
   =====================================================
-  After login success message appears,
-  hide it automatically after 3 seconds
   */
   useEffect(() => {
 
@@ -130,23 +139,19 @@ const Books = () => {
 
   /*
   =====================================================
-  FETCH BOOKS FUNCTION
+  FETCH BOOKS FROM BACKEND
   =====================================================
-  Calls backend API with pagination and search parameters
   */
   const fetchBooks = async (pageNumber = 1) => {
 
     try {
 
-      // Enable loading spinner
       setLoading(true);
 
-      // Send GET request with query parameters
       const res = await api.get(
         `/books?page=${pageNumber}&limit=${limit}&search=${search}`
       );
 
-      // Update UI with returned data
       setBooks(res.data.data);
       setPage(res.data.page);
       setTotalPages(res.data.totalPages);
@@ -157,7 +162,6 @@ const Books = () => {
 
     } finally {
 
-      // Disable loading spinner
       setLoading(false);
 
     }
@@ -166,9 +170,7 @@ const Books = () => {
 
 
   /*
-  =====================================================
-  LOAD BOOKS WHEN PAGE OR SEARCH CHANGES
-  =====================================================
+  Load books when page or search changes
   */
   useEffect(() => {
 
@@ -181,7 +183,6 @@ const Books = () => {
   =====================================================
   CREATE BOOK
   =====================================================
-  Sends POST request to backend
   */
   const handleCreate = async (e) => {
 
@@ -192,10 +193,8 @@ const Books = () => {
       year: Number(formData.year)
     });
 
-    // Clear form inputs
     setFormData({ title: "", author: "", year: "" });
 
-    // Refresh list
     setPage(1);
     fetchBooks(1);
 
@@ -245,11 +244,7 @@ const Books = () => {
 
     setEditingId(null);
 
-    setEditData({
-      title: "",
-      author: "",
-      year: ""
-    });
+    setEditData({ title: "", author: "", year: "" });
 
   };
 
@@ -324,19 +319,31 @@ const Books = () => {
               )}
 
               {tourStep < tourSteps.length - 1 ? (
+
                 <button
                   className="btn btn-primary"
                   onClick={() => setTourStep(tourStep + 1)}
                 >
                   Next
                 </button>
+
               ) : (
+
                 <button
                   className="btn btn-save"
-                  onClick={() => setTourStep(tourSteps.length)}
+                  onClick={() => {
+
+                    // Save completion flag
+                    localStorage.setItem("booksTourCompleted", "true");
+
+                    // End the tour
+                    setTourStep(tourSteps.length);
+
+                  }}
                 >
                   Finish
                 </button>
+
               )}
 
             </div>
@@ -485,5 +492,5 @@ const Books = () => {
 };
 
 
-// Export component so it can be used in routing
+// Export component for routing
 export default Books;
