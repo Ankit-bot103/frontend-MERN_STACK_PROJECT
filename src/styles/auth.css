@@ -1,153 +1,288 @@
 /*
-  ======================================================
-  AUTHENTICATION PAGE STYLES
-  ======================================================
-  This file contains shared styles for:
-  - Login page
-  - Register page
+======================================================
+AUTHENTICATION PAGE STYLES
+======================================================
 
-  Used by:
-  - src/pages/Login.jsx
-  - src/pages/Register.jsx
+This file contains shared styles for:
+
+- Login page
+- Register page
+
+Used by:
+
+- src/pages/Login.jsx
+- src/pages/Register.jsx
+
+Features:
+
+- Centered authentication layout
+- Clean card UI
+- Error / success messages
+- Loading spinner
+- Login progress bar
 */
 
 
 /* --------------------------------------------------
-   AUTH PAGE WRAPPER
+AUTH PAGE WRAPPER
 -------------------------------------------------- */
+
+/*
+Centers the authentication card
+vertically and horizontally
+*/
 
 .auth-page {
+
   min-height: calc(100vh - 70px);
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   background: #f5f7fb;
+
 }
 
 
 /* --------------------------------------------------
-   AUTH CARD
+AUTH CARD
 -------------------------------------------------- */
 
+/*
+White card that holds login/register form
+*/
+
 .auth-card {
+
   width: 100%;
+
   max-width: 400px;
+
   background: #ffffff;
+
   padding: 30px 35px;
+
   border-radius: 12px;
+
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
 }
 
 
 /* --------------------------------------------------
-   PAGE TITLE
+PAGE TITLE
 -------------------------------------------------- */
 
 .auth-card h2 {
+
   text-align: center;
+
   margin-bottom: 20px;
+
   font-size: 24px;
+
   color: #222;
+
 }
 
 
 /* --------------------------------------------------
-   FORM LAYOUT
+FORM LAYOUT
 -------------------------------------------------- */
 
+/*
+Stack form fields vertically
+*/
+
 .auth-card form {
+
   display: flex;
+
   flex-direction: column;
+
   gap: 14px;
+
 }
 
 
 /* --------------------------------------------------
-   INPUT FIELDS
+INPUT FIELDS
 -------------------------------------------------- */
 
 .auth-card input {
+
   padding: 10px 12px;
+
   border-radius: 6px;
+
   border: 1px solid #d0d5dd;
+
   font-size: 14px;
+
 }
 
 
-/* Input focus effect */
+/*
+Input focus state
+Improves accessibility and UX
+*/
 
 .auth-card input:focus {
+
   outline: none;
+
   border-color: #4f46e5;
+
   box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.15);
+
 }
 
 
 /* --------------------------------------------------
-   ERROR MESSAGE
+ERROR MESSAGE
 -------------------------------------------------- */
 
 .auth-error {
+
   background: #fee2e2;
+
   color: #b91c1c;
+
   padding: 8px 10px;
+
   border-radius: 6px;
+
   font-size: 13px;
+
   text-align: center;
+
 }
 
 
 /* --------------------------------------------------
-   SUCCESS MESSAGE
+SUCCESS MESSAGE
 -------------------------------------------------- */
 
 .auth-success {
+
   background: #dcfce7;
+
   color: #166534;
+
   padding: 8px 10px;
+
   border-radius: 6px;
+
   font-size: 13px;
+
   text-align: center;
+
 }
 
 
 /* --------------------------------------------------
-   BUTTON STYLING
+BUTTON STYLING
 -------------------------------------------------- */
 
 .auth-card .btn {
+
   width: 100%;
+
   padding: 10px;
+
   font-size: 14px;
+
 }
 
 
 /* --------------------------------------------------
-   LOADING SPINNER
+LOGIN PROGRESS BAR
 -------------------------------------------------- */
 
-.spinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid white;
-  border-top: 2px solid transparent;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px;
-  animation: spin 0.6s linear infinite;
+/*
+Displayed while login request is processing
+*/
+
+.progress-bar-container {
+
+  width: 100%;
+
+  height: 4px;
+
+  background: #e5e7eb;
+
+  border-radius: 4px;
+
+  margin-bottom: 12px;
+
+  overflow: hidden;
+
 }
 
 
-/* Spinner animation */
+/*
+Animated progress indicator
+*/
+
+.progress-bar {
+
+  height: 100%;
+
+  background: #4f46e5;
+
+  transition: width 0.3s ease;
+
+}
+
+
+/* --------------------------------------------------
+LOADING SPINNER
+-------------------------------------------------- */
+
+/*
+Spinner shown inside login button
+*/
+
+.spinner {
+
+  width: 14px;
+
+  height: 14px;
+
+  border: 2px solid white;
+
+  border-top: 2px solid transparent;
+
+  border-radius: 50%;
+
+  display: inline-block;
+
+  margin-right: 8px;
+
+  animation: spin 0.6s linear infinite;
+
+}
+
+
+/* --------------------------------------------------
+SPINNER ANIMATION
+-------------------------------------------------- */
 
 @keyframes spin {
 
   from {
+
     transform: rotate(0deg);
+
   }
 
   to {
+
     transform: rotate(360deg);
+
   }
 
 }
