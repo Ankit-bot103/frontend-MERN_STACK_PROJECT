@@ -1,13 +1,12 @@
 # 📚 Book Management System -- MERN Stack (Frontend)
 
-A modern **MERN stack learning project** used in a **6-Day MERN
-Bootcamp** to teach students how to build a **real-world full-stack
+A modern **MERN stack learning project**  how to build a **real-world full-stack
 application**.
 
 This frontend is built with **React + Vite** and communicates with a
 **secure JWT-based Node.js backend API**.
 
-Students learn how to build a **production-style SaaS dashboard
+Build a **production-style SaaS dashboard
 application** with authentication, CRUD operations, search, pagination,
 responsive UI, and onboarding tour.
 
