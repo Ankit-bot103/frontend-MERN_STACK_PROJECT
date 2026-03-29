@@ -101,16 +101,44 @@ SaaS-style UI with:
 -   Main content panel
 
 ------------------------------------------------------------------------
+## 📂 Project Structure
 
-# 📂 Project Structure
-
-client/ │ ├── src/ │ ├── api/ │ │ └── axios.js │ │ │ ├── components/ │ │
-├── Navbar.jsx │ │ ├── Sidebar.jsx │ │ └── ProtectedRoute.jsx │ │ │ ├──
-context/ │ │ └── AuthContext.jsx │ │ │ ├── pages/ │ │ ├── Home.jsx │ │
-├── Login.jsx │ │ ├── Register.jsx │ │ └── Books.jsx │ │ │ ├── styles/ │
-│ ├── books.css │ │ ├── auth.css │ │ ├── navbar.css │ │ └──
-dashboard.css │ │ │ ├── App.jsx │ ├── main.jsx │ └── index.css │ ├──
-.env ├── package.json ├── vite.config.js └── README.md
+```
+client/
+│
+├── src/
+│   ├── api/
+│   │   └── axios.js
+│   │
+│   ├── components/
+│   │   ├── Navbar.jsx
+│   │   ├── Sidebar.jsx
+│   │   └── ProtectedRoute.jsx
+│   │
+│   ├── context/
+│   │   └── AuthContext.jsx
+│   │
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   └── Books.jsx
+│   │
+│   ├── styles/
+│   │   ├── books.css
+│   │   ├── auth.css
+│   │   ├── navbar.css
+│   │   └── dashboard.css
+│   │
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+│
+├── .env
+├── package.json
+├── vite.config.js
+└── README.md
+```
 
 ------------------------------------------------------------------------
 
