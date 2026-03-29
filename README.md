@@ -1,231 +1,206 @@
-# 📚 Book Management System – Frontend (React + Vite)
+# 📚 Book Management System -- MERN Stack (Frontend)
 
-This is the **frontend client application** for the **Book Management System**, built using **React**, **Vite**, and **Axios**.  
-It consumes a secure **JWT-based backend API** and provides a clean, modern UI for managing books.
+A modern **MERN stack learning project** used in a **6-Day MERN
+Bootcamp** to teach students how to build a **real-world full-stack
+application**.
 
----
+This frontend is built with **React + Vite** and communicates with a
+**secure JWT-based Node.js backend API**.
 
-## 🚀 Tech Stack
+Students learn how to build a **production-style SaaS dashboard
+application** with authentication, CRUD operations, search, pagination,
+responsive UI, and onboarding tour.
 
-- **React 18** – UI library
-- **Vite** – Fast build tool & dev server
-- **React Router DOM** – Client-side routing
-- **Axios** – API communication
-- **Context API** – Global authentication state
-- **CSS (modular styles)** – Custom UI styling
+------------------------------------------------------------------------
 
----
+# 🚀 Tech Stack
 
-## 📂 Project Structure
+## Frontend
 
-```
-client/
-│
-├── src/
-│   ├── api/
-│   │   └── axios.js              # Axios instance + JWT interceptors
-│   │
-│   ├── components/
-│   │   ├── Navbar.jsx            # Top navigation bar
-│   │   └── ProtectedRoute.jsx    # Route guard for authenticated users
-│   │
-│   ├── context/
-│   │   └── AuthContext.jsx       # Global auth state (login/logout/token)
-│   │
-│   ├── pages/
-│   │   ├── Home.jsx              # Project overview / landing page
-│   │   ├── Login.jsx             # User login screen
-│   │   ├── Register.jsx          # User registration screen
-│   │   └── Books.jsx             # Core CRUD + Search + Pagination UI
-│   │
-│   ├── styles/
-│   │   ├── books.css             # Styling for Books page
-│   │   ├── auth.css              # Styling for Login & Register
-│   │   └── navbar.css            # Navbar styling
-│   │
-│   ├── App.jsx                   # Routes configuration
-│   ├── main.jsx                  # React entry point
-│   │
-│   └── index.css (optional)      # Global styles if needed
-│
-├── .env                          # Frontend environment variables
-├── package.json
-├── vite.config.js
-└── README.md
-```
+-   React 18
+-   Vite
+-   React Router DOM
+-   Axios
+-   Context API
+-   Custom CSS
 
----
+## Backend (separate repo)
 
-## 🧠 Architecture Overview
+-   Node.js
+-   Express.js
+-   MongoDB
+-   JWT Authentication
 
-### 1️⃣ Pages (`src/pages/`)
+------------------------------------------------------------------------
 
-#### 🔹 Home.jsx
-- Acts as a **hero/landing page**
-- Explains:
-  - What the project is
-  - Key features
-  - Tech stack
-- No scrolling-heavy UI
+# 🎯 Features
 
-#### 🔹 Login.jsx
-- Authenticates users
-- Sends credentials to backend `/auth/login`
-- Stores JWT token in `localStorage`
-- Redirects to `/books` on success
+## 🔐 Authentication
 
-#### 🔹 Register.jsx
-- Registers new users via `/auth/register`
-- Validates inputs
-- Redirects to login after success
+-   Register user
+-   Login user
+-   JWT authentication
+-   Protected routes
+-   Auto logout on token expiration
 
-#### 🔹 Books.jsx (Core Feature)
-Implements **full book management UI**:
-- ➕ Create book
-- ✏️ Edit book
-- ❌ Delete book
-- 🔍 Search (title / author)
-- 📄 Pagination (backend-driven)
-- 🔐 JWT-protected operations
-- 🧼 Clear search with ❌ button
+## 📚 Book Management
 
----
+-   Create book
+-   Edit book
+-   Delete book
+-   View books list
 
-### 2️⃣ Components (`src/components/`)
+## 🔎 Search
 
-#### 🔹 Navbar.jsx
-- Visible on all pages
-- Shows links conditionally:
-  - Login / Register (guest)
-  - Books / Logout (authenticated)
-- Matches Books page UI theme
+-   Search by **title**
+-   Search by **author**
+-   Live filtering
 
-#### 🔹 ProtectedRoute.jsx
-- Wraps protected routes
-- Blocks unauthenticated access
-- Redirects to `/login` if token missing
+## 📄 Pagination
 
----
+-   Backend-driven pagination
+-   Page navigation
+-   Dynamic page buttons
 
-### 3️⃣ Auth Context (`src/context/AuthContext.jsx`)
+## 🎯 UX Improvements
 
-Centralized authentication logic:
-- Stores:
-  - `isAuth`
-  - `role`
-  - JWT token
-- Exposes:
-  - `login(token, role)`
-  - `logout()`
-- Keeps UI state in sync with auth status
+-   Loading spinner
+-   Login progress bar
+-   Success messages
+-   Error handling
+-   Disabled buttons during loading
 
----
+## 🧭 Interactive Product Tour
 
-### 4️⃣ API Layer (`src/api/axios.js`)
+First-time users see a guided tour explaining:
 
-Reusable Axios instance:
-- Base URL from `.env`
-- Automatically attaches JWT:
-  ```
-  Authorization: Bearer <token>
-  ```
-- Global 401 handler:
-  - Clears storage
-  - Redirects to `/login`
+1.  Add Book\
+2.  Edit Book\
+3.  Delete Book\
+4.  Search Books\
+5.  Pagination
 
----
+Tour runs **only once using localStorage**.
 
-### 5️⃣ Styling (`src/styles/`)
+## 📱 Responsive UI
 
-- **books.css**
-  - Grid-based book list
-  - Buttons (add/edit/delete/save/cancel)
-  - Pagination UI
-  - Search bar with clear ❌
+Works on:
 
-- **auth.css**
-  - Centered login/register cards
-  - Error messaging
-  - Consistent UI with books page
+-   Mobile phones
+-   Tablets
+-   Laptops
+-   Desktop monitors
+-   Large screens / projectors
 
-- **navbar.css**
-  - Sticky top navbar
-  - Styled links & buttons
-  - Theme-aligned colors
+## 🧑‍💻 Dashboard Layout
 
----
+SaaS-style UI with:
 
-## 🔐 Authentication Flow
+-   Sidebar navigation
+-   Top navbar
+-   Main content panel
 
-1. User logs in / registers
-2. Backend returns JWT token
-3. Token stored in `localStorage`
-4. Axios interceptor attaches token to all requests
-5. Protected routes validate token
-6. Expired token → auto logout
+------------------------------------------------------------------------
 
----
+# 📂 Project Structure
 
-## 🌐 Environment Variables
+client/ │ ├── src/ │ ├── api/ │ │ └── axios.js │ │ │ ├── components/ │ │
+├── Navbar.jsx │ │ ├── Sidebar.jsx │ │ └── ProtectedRoute.jsx │ │ │ ├──
+context/ │ │ └── AuthContext.jsx │ │ │ ├── pages/ │ │ ├── Home.jsx │ │
+├── Login.jsx │ │ ├── Register.jsx │ │ └── Books.jsx │ │ │ ├── styles/ │
+│ ├── books.css │ │ ├── auth.css │ │ ├── navbar.css │ │ └──
+dashboard.css │ │ │ ├── App.jsx │ ├── main.jsx │ └── index.css │ ├──
+.env ├── package.json ├── vite.config.js └── README.md
 
-Create `.env` file in project root:
+------------------------------------------------------------------------
 
-```
+# 🧠 Architecture Overview
+
+## Pages
+
+### Home.jsx
+
+Landing page explaining: - Project overview - Features - Technology
+stack
+
+### Login.jsx
+
+Handles: - User login - JWT authentication - Redirect to dashboard -
+Loading progress indicator
+
+### Register.jsx
+
+Handles: - User registration - Validation - Redirect to login page
+
+### Books.jsx
+
+Core application page implementing: - CRUD operations - Search -
+Pagination - Onboarding tour - Responsive layout
+
+------------------------------------------------------------------------
+
+# 🔐 Authentication Flow
+
+User logs in\
+↓\
+Backend returns JWT\
+↓\
+Token stored in localStorage\
+↓\
+Axios interceptor attaches token\
+↓\
+Protected routes allow access\
+↓\
+Expired token → auto logout
+
+------------------------------------------------------------------------
+
+# 🌐 Environment Variables
+
+Create `.env` in the project root.
+
 VITE_API_BASE_URL=http://localhost:8800/api
-```
 
-> ⚠️ Do NOT commit `.env` to GitHub
+⚠️ Never commit `.env` to GitHub.
 
----
+------------------------------------------------------------------------
 
-## ▶️ How to Run the Frontend
+# ▶️ Run the Project
 
-### Install dependencies
-```bash
+Install dependencies
+
 npm install
-```
 
-### Start development server
-```bash
+Start development server
+
 npm run dev
-```
 
 Expected output:
-```
-VITE vX.X.X ready in XXX ms
+
+VITE ready\
 Local: http://localhost:5173
-```
 
----
 
-## ✅ Features Implemented
 
-- Authentication (Login / Register)
-- JWT-secured API calls
-- Book CRUD operations
-- Pagination (backend-driven)
-- Search with live filtering
-- Responsive, clean UI
-- Protected routes
-- Global auth state
-- Auto logout on token expiry
 
----
+------------------------------------------------------------------------
 
-## 📌 Future Enhancements (Optional)
+# 💡 Live Deployment Links
+Client/React/Ui App:- https://mern-stack-client-app.vercel.app
+Server/Express/Backend App:- https://mern-stack-server-app-nischalaremanda.onrender.com
 
-- Sorting (title/year)
-- Toast notifications
-- Role-based delete restrictions
-- Deployment (Netlify + Render)
-- Dark mode
-- Form validation messages
 
----
+------------------------------------------------------------------------
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
-**Nischal Aremanda**  
-Full-Stack Developer  
-React | Node.js | MongoDB | JWT
+**Nischal Aremanda**\
+Full Stack Developer\
+React \| Node.js \| MongoDB \| AI \| Cloud
 
+------------------------------------------------------------------------
+
+# ⭐ Project Goal
+
+Helps in learning  **real-world MERN development** by building a
+**complete full-stack application** instead of simple tutorials.
