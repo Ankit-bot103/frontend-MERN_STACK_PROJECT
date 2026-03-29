@@ -1,99 +1,237 @@
-// Import Link for client-side navigation (no page reload)
-// Import useNavigate for programmatic redirection
+// Import React hook used to store component state
+// We use this to control the mobile hamburger menu open/close
+import { useState } from "react";
+
+// Import Link for client-side navigation (prevents full page reload)
+// Import useNavigate for redirecting users programmatically
 import { Link, useNavigate } from "react-router-dom";
 
 // Import custom authentication hook
-// useAuth gives access to auth state and actions
+// useAuth gives access to authentication state and logout function
 import { useAuth } from "../context/AuthContext";
 
 // Import navbar-specific CSS styles
 import "../styles/navbar.css";
 
-// Navbar is a functional React component
+
+// Navbar component definition
 const Navbar = () => {
 
-    // Destructure authentication state and logout function
-    // isAuth → true if user is logged in
-    // logout → clears auth state and tokens
+    /*
+    -------------------------------------------------------
+    AUTHENTICATION STATE
+    -------------------------------------------------------
+    isAuth → Boolean that tells if the user is logged in
+    logout → Function used to clear authentication data
+    */
     const { isAuth, logout } = useAuth();
 
-    // useNavigate allows redirecting users using JavaScript
+
+    /*
+    -------------------------------------------------------
+    NAVIGATION HOOK
+    -------------------------------------------------------
+    Allows redirecting users using JavaScript
+    Example: navigate("/login")
+    */
     const navigate = useNavigate();
 
-    /**
-     * Handle Logout Button Click
-     * 1. Call logout() to clear authentication data
-     * 2. Redirect user to login page
-     */
-    const handleLogout = () => {
-        logout();              // Clear auth state (token, role, user info)
-        navigate("/login");    // Redirect to login page
+
+    /*
+    -------------------------------------------------------
+    MOBILE MENU STATE
+    -------------------------------------------------------
+    menuOpen → true if hamburger menu is expanded
+    false → mobile menu hidden
+    */
+    const [menuOpen, setMenuOpen] = useState(false);
+
+
+    /*
+    -------------------------------------------------------
+    TOGGLE MOBILE MENU
+    -------------------------------------------------------
+    When hamburger icon is clicked:
+    - If menu closed → open it
+    - If menu open → close it
+    */
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
     };
 
-    // JSX returned by Navbar component
+
+    /*
+    -------------------------------------------------------
+    CLOSE MOBILE MENU
+    -------------------------------------------------------
+    Used when user clicks any navigation link
+    Improves mobile UX
+    */
+    const closeMenu = () => {
+        setMenuOpen(false);
+    };
+
+
+    /*
+    -------------------------------------------------------
+    LOGOUT HANDLER
+    -------------------------------------------------------
+    Steps:
+    1. Clear authentication state
+    2. Close mobile menu
+    3. Redirect user to login page
+    */
+    const handleLogout = () => {
+
+        // Clear authentication data
+        logout();
+
+        // Close mobile menu
+        closeMenu();
+
+        // Redirect user to login page
+        navigate("/login");
+    };
+
+
+    /*
+    -------------------------------------------------------
+    JSX UI STRUCTURE
+    -------------------------------------------------------
+    Navbar Layout
+
+    Desktop:
+    Logo | Home | Books | Login/Register OR Logout
+
+    Mobile:
+    Logo | ☰
+    ↓
+    Home
+    Books
+    Login/Register OR Logout
+    */
     return (
-        // Main navigation wrapper
+
+        // Main navigation bar container
         <nav className="navbar">
+
+            {/* Container used for layout alignment */}
             <div className="navbar-container">
 
-                {/* =========================
-                    Brand / Logo Section
-                   ========================= */}
-                <Link to="/" className="navbar-brand">
+
+                {/* --------------------------------------------------
+                   BRAND / LOGO
+                -------------------------------------------------- */}
+                <Link
+                    to="/"
+                    className="navbar-brand"
+
+                    // Close mobile menu when clicking logo
+                    onClick={closeMenu}
+                >
                     Book Management System
                 </Link>
 
-                {/* =========================
-                    Navigation Links
-                   ========================= */}
-                <div className="navbar-links">
 
-                    {/* Home link is always visible */}
-                    <Link to="/" className="nav-link">
+                {/* --------------------------------------------------
+                   HAMBURGER MENU (MOBILE ONLY)
+                -------------------------------------------------- */}
+                <div
+                    className={`hamburger ${menuOpen ? "active" : ""}`}
+
+                    // Toggle menu when clicked
+                    onClick={toggleMenu}
+                >
+
+                    {/* Hamburger bars */}
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+
+                {/* --------------------------------------------------
+                   NAVIGATION LINKS
+                -------------------------------------------------- */}
+                <div
+                    className={`navbar-links ${menuOpen ? "open" : ""}`}
+                >
+
+                    {/* Home link visible to all users */}
+                    <Link
+                        to="/"
+                        className="nav-link"
+                        onClick={closeMenu}
+                    >
                         Home
                     </Link>
 
-                    {/* 
-                        Show "Books" link ONLY when user is authenticated
-                        Conditional rendering using && operator
-                    */}
+
+                    {/* --------------------------------------------------
+                       BOOKS LINK
+                       Visible only when user is authenticated
+                    -------------------------------------------------- */}
                     {isAuth && (
-                        <Link to="/books" className="nav-link">
+                        <Link
+                            to="/books"
+                            className="nav-link"
+                            onClick={closeMenu}
+                        >
                             Books
                         </Link>
                     )}
 
-                    {/* 
-                        Conditional Rendering using Ternary Operator
-                        If user is NOT authenticated → show Login & Register
-                        If user IS authenticated → show Logout button
-                    */}
+
+                    {/* --------------------------------------------------
+                       AUTHENTICATION BUTTONS
+                    -------------------------------------------------- */}
+
+                    {/* If user NOT logged in show Login/Register */}
                     {!isAuth ? (
+
                         <>
                             {/* Login button */}
-                            <Link to="/login" className="btn btn-outline">
+                            <Link
+                                to="/login"
+                                className="btn btn-outline"
+                                onClick={closeMenu}
+                            >
                                 Login
                             </Link>
 
                             {/* Register button */}
-                            <Link to="/register" className="btn btn-primary">
+                            <Link
+                                to="/register"
+                                className="btn btn-primary"
+                                onClick={closeMenu}
+                            >
                                 Register
                             </Link>
                         </>
+
                     ) : (
-                        // Logout button (visible only when logged in)
+
+                        /* If logged in show Logout button */
                         <button
                             className="btn btn-logout"
+
+                            // Call logout handler
                             onClick={handleLogout}
                         >
                             Logout
                         </button>
+
                     )}
+
                 </div>
+
             </div>
+
         </nav>
     );
 };
 
-// Export Navbar so it can be used in App.jsx
+
+// Export Navbar so it can be used inside App.jsx
 export default Navbar;
