@@ -3,22 +3,18 @@
 BOOKS PAGE
 =====================================================
 
-File:
-src/pages/Books.jsx
+Features:
 
-Features implemented:
-
-- Fetch books from backend API
-- Create new book
-- Edit book
-- Delete book
-- Search functionality
-- Pagination
-- Loading spinner
-- Login success message auto-hide
-- Product onboarding tour
-- Tour runs only once using localStorage
-
+✔ Fetch books
+✔ Create book
+✔ Edit book
+✔ Delete book
+✔ Search
+✔ Pagination
+✔ Loading spinner
+✔ Login success message
+✔ Product tour
+✔ Tour runs once using localStorage
 */
 
 import { useEffect, useState } from "react";
@@ -28,31 +24,19 @@ import "../styles/books.css";
 
 const Books = () => {
 
-  /*
-  =====================================================
-  READ SUCCESS MESSAGE FROM NAVIGATION STATE
-  =====================================================
-  Login page sends success message using navigate state
-  */
+  /* ==========================================
+  READ SUCCESS MESSAGE FROM LOGIN PAGE
+  ========================================== */
   const location = useLocation();
   const successMessage = location.state?.message;
 
-
-  /*
-  =====================================================
-  SUCCESS MESSAGE VISIBILITY STATE
-  =====================================================
-  Allows message to auto hide after 3 seconds
-  */
   const [showMessage, setShowMessage] = useState(true);
 
 
-  /*
-  =====================================================
+  /* ==========================================
   PRODUCT TOUR STATE
-  =====================================================
-  Tour runs only once using localStorage
-  */
+  ========================================== */
+
   const [tourStep, setTourStep] = useState(() => {
 
     const completed = localStorage.getItem("booksTourCompleted");
@@ -62,60 +46,45 @@ const Books = () => {
     }
 
     return 0;
-
   });
 
-
-  /*
-  Instructions shown in product tour
-  */
   const tourSteps = [
-
     "Add a new book using Title, Author and Year fields.",
-
     "Click Edit to modify an existing book.",
-
     "Click Delete to remove a book.",
-
     "Use the search bar to filter books.",
-
     "Use pagination to navigate between pages."
-
   ];
 
 
-  /*
-  =====================================================
-  BOOK DATA STATE
-  =====================================================
-  */
+  /* ==========================================
+  BOOK DATA
+  ========================================== */
+
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
 
-  /*
-  =====================================================
-  PAGINATION STATE
-  =====================================================
-  */
+  /* ==========================================
+  PAGINATION
+  ========================================== */
+
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 5;
 
 
-  /*
-  =====================================================
-  SEARCH STATE
-  =====================================================
-  */
+  /* ==========================================
+  SEARCH
+  ========================================== */
+
   const [search, setSearch] = useState("");
 
 
-  /*
-  =====================================================
+  /* ==========================================
   EDIT MODE STATE
-  =====================================================
-  */
+  ========================================== */
+
   const [editingId, setEditingId] = useState(null);
 
   const [editData, setEditData] = useState({
@@ -125,11 +94,10 @@ const Books = () => {
   });
 
 
-  /*
-  =====================================================
+  /* ==========================================
   CREATE FORM STATE
-  =====================================================
-  */
+  ========================================== */
+
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -137,11 +105,10 @@ const Books = () => {
   });
 
 
-  /*
-  =====================================================
-  AUTO HIDE SUCCESS MESSAGE
-  =====================================================
-  */
+  /* ==========================================
+  AUTO HIDE LOGIN SUCCESS MESSAGE
+  ========================================== */
+
   useEffect(() => {
 
     if (successMessage) {
@@ -157,11 +124,10 @@ const Books = () => {
   }, [successMessage]);
 
 
-  /*
-  =====================================================
-  FETCH BOOKS FROM BACKEND
-  =====================================================
-  */
+  /* ==========================================
+  FETCH BOOKS
+  ========================================== */
+
   const fetchBooks = async (pageNumber = 1) => {
 
     try {
@@ -189,19 +155,15 @@ const Books = () => {
   };
 
 
-  /*
-  Fetch books when page or search changes
-  */
   useEffect(() => {
     fetchBooks(page);
   }, [page, search]);
 
 
-  /*
-  =====================================================
+  /* ==========================================
   CREATE BOOK
-  =====================================================
-  */
+  ========================================== */
+
   const handleCreate = async (e) => {
 
     e.preventDefault();
@@ -218,17 +180,15 @@ const Books = () => {
     });
 
     setPage(1);
-
     fetchBooks(1);
 
   };
 
 
-  /*
-  =====================================================
+  /* ==========================================
   DELETE BOOK
-  =====================================================
-  */
+  ========================================== */
+
   const handleDelete = async (id) => {
 
     if (!window.confirm("Delete this book?")) return;
@@ -240,11 +200,10 @@ const Books = () => {
   };
 
 
-  /*
-  =====================================================
-  START EDIT MODE
-  =====================================================
-  */
+  /* ==========================================
+  START EDIT
+  ========================================== */
+
   const startEdit = (book) => {
 
     setEditingId(book._id);
@@ -258,23 +217,19 @@ const Books = () => {
   };
 
 
-  /*
-  =====================================================
+  /* ==========================================
   CANCEL EDIT
-  =====================================================
-  */
+  ========================================== */
+
   const cancelEdit = () => {
-
     setEditingId(null);
-
   };
 
 
-  /*
-  =====================================================
-  SAVE EDITED BOOK
-  =====================================================
-  */
+  /* ==========================================
+  SAVE EDIT
+  ========================================== */
+
   const saveEdit = async (id) => {
 
     await api.put(`/books/${id}`, {
@@ -283,17 +238,15 @@ const Books = () => {
     });
 
     cancelEdit();
-
     fetchBooks(page);
 
   };
 
 
-  /*
-  =====================================================
+  /* ==========================================
   LOADING SCREEN
-  =====================================================
-  */
+  ========================================== */
+
   if (loading) {
 
     return (
@@ -306,11 +259,10 @@ const Books = () => {
   }
 
 
-  /*
-  =====================================================
-  MAIN PAGE UI
-  =====================================================
-  */
+  /* ==========================================
+  MAIN UI
+  ========================================== */
+
   return (
 
     <div className="books-container">
@@ -318,9 +270,7 @@ const Books = () => {
       <h2>Books</h2>
 
 
-      {/* ========================================
-      PRODUCT TOUR OVERLAY
-      ======================================== */}
+      {/* PRODUCT TOUR */}
       {tourStep < tourSteps.length && (
 
         <div className="books-tour">
@@ -358,7 +308,6 @@ const Books = () => {
                   onClick={() => {
 
                     localStorage.setItem("booksTourCompleted", "true");
-
                     setTourStep(999);
 
                   }}
@@ -383,7 +332,7 @@ const Books = () => {
       )}
 
 
-      {/* SEARCH BAR */}
+      {/* SEARCH */}
       <div className="search-container">
 
         <input
@@ -399,7 +348,7 @@ const Books = () => {
       </div>
 
 
-      {/* ADD BOOK FORM */}
+      {/* CREATE BOOK */}
       <form
         className={`add-book-form ${tourStep === 0 ? "tour-highlight" : ""}`}
         onSubmit={handleCreate}
@@ -445,27 +394,72 @@ const Books = () => {
 
         <div key={book._id} className="book-row">
 
-          <div className="book-title">
-            {book.title}
-          </div>
+          {editingId === book._id ? (
 
-          <div className="book-meta">
-            {book.author} ({book.year})
-          </div>
+            <>
+              <input
+                value={editData.title}
+                onChange={(e) =>
+                  setEditData({ ...editData, title: e.target.value })
+                }
+              />
 
-          <button
-            className={`btn btn-edit ${tourStep === 1 ? "tour-highlight" : ""}`}
-            onClick={() => startEdit(book)}
-          >
-            Edit
-          </button>
+              <input
+                value={editData.author}
+                onChange={(e) =>
+                  setEditData({ ...editData, author: e.target.value })
+                }
+              />
 
-          <button
-            className={`btn btn-delete ${tourStep === 2 ? "tour-highlight" : ""}`}
-            onClick={() => handleDelete(book._id)}
-          >
-            Delete
-          </button>
+              <input
+                value={editData.year}
+                onChange={(e) =>
+                  setEditData({ ...editData, year: e.target.value })
+                }
+              />
+
+              <button
+                className="btn btn-save"
+                onClick={() => saveEdit(book._id)}
+              >
+                Save
+              </button>
+
+              <button
+                className="btn btn-cancel"
+                onClick={cancelEdit}
+              >
+                Cancel
+              </button>
+            </>
+
+          ) : (
+
+            <>
+              <div className="book-title">
+                {book.title}
+              </div>
+
+              <div className="book-meta">
+                {book.author} ({book.year})
+              </div>
+
+              <button
+                className={`btn btn-edit ${tourStep === 1 ? "tour-highlight" : ""}`}
+                onClick={() => startEdit(book)}
+              >
+                Edit
+              </button>
+
+              <button
+                className={`btn btn-delete ${tourStep === 2 ? "tour-highlight" : ""}`}
+                onClick={() => handleDelete(book._id)}
+              >
+                Delete
+              </button>
+            </>
+
+          )}
 
         </div>
 
