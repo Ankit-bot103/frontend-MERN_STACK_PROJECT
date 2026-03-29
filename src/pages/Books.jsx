@@ -1,29 +1,40 @@
-// Import React hooks used for managing state and lifecycle
+/*
+=====================================================
+BOOKS PAGE
+=====================================================
+
+File:
+src/pages/Books.jsx
+
+Features implemented:
+
+- Fetch books from backend API
+- Create new book
+- Edit book
+- Delete book
+- Search functionality
+- Pagination
+- Loading spinner
+- Login success message auto-hide
+- Product onboarding tour
+- Tour runs only once using localStorage
+
+*/
+
 import { useEffect, useState } from "react";
-
-// Import router hook to access navigation state
-// This allows us to read success messages passed during navigation
 import { useLocation } from "react-router-dom";
-
-// Import Axios instance configured with baseURL and JWT interceptor
 import api from "../api/axios";
-
-// Import styles specific to the Books page
 import "../styles/books.css";
 
-
-// Books component definition
 const Books = () => {
 
   /*
   =====================================================
   READ SUCCESS MESSAGE FROM NAVIGATION STATE
   =====================================================
-  When user logs in successfully we pass a message
-  from Login page → Books page using React Router state
+  Login page sends success message using navigate state
   */
   const location = useLocation();
-
   const successMessage = location.state?.message;
 
 
@@ -31,8 +42,7 @@ const Books = () => {
   =====================================================
   SUCCESS MESSAGE VISIBILITY STATE
   =====================================================
-  This allows the success message to disappear automatically
-  after a few seconds.
+  Allows message to auto hide after 3 seconds
   */
   const [showMessage, setShowMessage] = useState(true);
 
@@ -41,7 +51,7 @@ const Books = () => {
   =====================================================
   PRODUCT TOUR STATE
   =====================================================
-  The onboarding tour runs only once using localStorage
+  Tour runs only once using localStorage
   */
   const [tourStep, setTourStep] = useState(() => {
 
@@ -57,14 +67,20 @@ const Books = () => {
 
 
   /*
-  Instructions displayed during onboarding tour
+  Instructions shown in product tour
   */
   const tourSteps = [
+
     "Add a new book using Title, Author and Year fields.",
+
     "Click Edit to modify an existing book.",
+
     "Click Delete to remove a book.",
+
     "Use the search bar to filter books.",
+
     "Use pagination to navigate between pages."
+
   ];
 
 
@@ -72,11 +88,8 @@ const Books = () => {
   =====================================================
   BOOK DATA STATE
   =====================================================
-  books → stores books returned from backend
-  loading → controls loading spinner/skeleton
   */
   const [books, setBooks] = useState([]);
-
   const [loading, setLoading] = useState(true);
 
 
@@ -84,13 +97,9 @@ const Books = () => {
   =====================================================
   PAGINATION STATE
   =====================================================
-  page → current page
-  totalPages → pages returned from backend
   */
   const [page, setPage] = useState(1);
-
   const [totalPages, setTotalPages] = useState(1);
-
   const limit = 5;
 
 
@@ -164,9 +173,7 @@ const Books = () => {
       );
 
       setBooks(res.data.data);
-
       setPage(res.data.page);
-
       setTotalPages(res.data.totalPages);
 
     } catch (err) {
@@ -183,12 +190,10 @@ const Books = () => {
 
 
   /*
-  Load books whenever page or search changes
+  Fetch books when page or search changes
   */
   useEffect(() => {
-
     fetchBooks(page);
-
   }, [page, search]);
 
 
@@ -262,12 +267,6 @@ const Books = () => {
 
     setEditingId(null);
 
-    setEditData({
-      title: "",
-      author: "",
-      year: ""
-    });
-
   };
 
 
@@ -317,6 +316,65 @@ const Books = () => {
     <div className="books-container">
 
       <h2>Books</h2>
+
+
+      {/* ========================================
+      PRODUCT TOUR OVERLAY
+      ======================================== */}
+      {tourStep < tourSteps.length && (
+
+        <div className="books-tour">
+
+          <div className="tour-card">
+
+            <h3>📘 Books Page Tour</h3>
+
+            <p>{tourSteps[tourStep]}</p>
+
+            <div className="tour-actions">
+
+              {tourStep > 0 && (
+                <button
+                  className="btn btn-cancel"
+                  onClick={() => setTourStep(tourStep - 1)}
+                >
+                  Back
+                </button>
+              )}
+
+              {tourStep < tourSteps.length - 1 ? (
+
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setTourStep(tourStep + 1)}
+                >
+                  Next
+                </button>
+
+              ) : (
+
+                <button
+                  className="btn btn-save"
+                  onClick={() => {
+
+                    localStorage.setItem("booksTourCompleted", "true");
+
+                    setTourStep(999);
+
+                  }}
+                >
+                  Finish
+                </button>
+
+              )}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
 
 
       {/* SUCCESS MESSAGE */}
@@ -387,27 +445,23 @@ const Books = () => {
 
         <div key={book._id} className="book-row">
 
-          {/* Book title */}
           <div className="book-title">
             {book.title}
           </div>
 
-          {/* Book author + year */}
           <div className="book-meta">
             {book.author} ({book.year})
           </div>
 
-          {/* Edit button */}
           <button
-            className="btn btn-edit"
+            className={`btn btn-edit ${tourStep === 1 ? "tour-highlight" : ""}`}
             onClick={() => startEdit(book)}
           >
             Edit
           </button>
 
-          {/* Delete button */}
           <button
-            className="btn btn-delete"
+            className={`btn btn-delete ${tourStep === 2 ? "tour-highlight" : ""}`}
             onClick={() => handleDelete(book._id)}
           >
             Delete
@@ -421,7 +475,7 @@ const Books = () => {
       {/* PAGINATION */}
       {totalPages > 1 && (
 
-        <div className="pagination">
+        <div className={`pagination ${tourStep === 4 ? "tour-highlight" : ""}`}>
 
           <button
             disabled={page === 1}
@@ -459,6 +513,4 @@ const Books = () => {
 
 };
 
-
-// Export component so routing can use it
 export default Books;
