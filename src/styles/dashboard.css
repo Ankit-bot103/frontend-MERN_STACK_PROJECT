@@ -1,1 +1,254 @@
+/*
+======================================================
+DASHBOARD LAYOUT STYLES
+======================================================
 
+File:
+src/styles/dashboard.css
+
+Used by:
+- App.jsx
+- Sidebar.jsx
+
+Purpose:
+- Create SaaS-style dashboard layout
+- Position Sidebar + Main Content
+- Provide responsive behavior
+*/
+
+
+/* --------------------------------------------------
+APP LAYOUT ROOT
+-------------------------------------------------- */
+
+/*
+Main application layout wrapper
+
+Contains:
+Navbar
+Dashboard container
+*/
+
+.app-layout {
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 100vh;
+
+}
+
+
+
+/* --------------------------------------------------
+DASHBOARD CONTAINER
+-------------------------------------------------- */
+
+/*
+Contains sidebar + main content
+*/
+
+.dashboard-container {
+
+  display: flex;
+
+  flex: 1;
+
+}
+
+
+
+/* --------------------------------------------------
+SIDEBAR
+-------------------------------------------------- */
+
+/*
+Left navigation panel
+*/
+
+.sidebar {
+
+  width: 220px;
+
+  background: #111827;
+
+  color: white;
+
+  padding: 25px 20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
+
+/* Sidebar title */
+
+.sidebar-title {
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  margin-bottom: 20px;
+
+}
+
+
+
+/* Sidebar navigation container */
+
+.sidebar-nav {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+}
+
+
+
+/* Sidebar links */
+
+.sidebar-link {
+
+  text-decoration: none;
+
+  color: #cbd5e1;
+
+  padding: 10px 12px;
+
+  border-radius: 6px;
+
+  font-size: 14px;
+
+  transition: background 0.2s ease;
+
+}
+
+
+
+/* Hover effect */
+
+.sidebar-link:hover {
+
+  background: #1f2937;
+
+  color: white;
+
+}
+
+
+
+/* Active navigation link */
+
+.sidebar-link.active {
+
+  background: #4f46e5;
+
+  color: white;
+
+}
+
+
+
+/* --------------------------------------------------
+MAIN DASHBOARD CONTENT
+-------------------------------------------------- */
+
+/*
+This area displays pages like:
+Home
+Books
+Future analytics
+*/
+
+.dashboard-content {
+
+  flex: 1;
+
+  padding: 30px;
+
+  background: #f5f7fb;
+
+  overflow-x: hidden;
+
+}
+
+
+
+/* --------------------------------------------------
+RESPONSIVE DESIGN
+-------------------------------------------------- */
+
+
+/* TABLETS */
+
+@media (max-width: 1024px) {
+
+  .sidebar {
+
+    width: 200px;
+
+  }
+
+}
+
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .dashboard-container {
+
+    flex-direction: column;
+
+  }
+
+  .sidebar {
+
+    width: 100%;
+
+    flex-direction: row;
+
+    justify-content: space-around;
+
+    padding: 12px;
+
+  }
+
+  .sidebar-title {
+
+    display: none;
+
+  }
+
+  .sidebar-nav {
+
+    flex-direction: row;
+
+    gap: 15px;
+
+  }
+
+}
+
+
+
+/* SMALL PHONES */
+
+@media (max-width: 480px) {
+
+  .dashboard-content {
+
+    padding: 20px;
+
+  }
+
+}
