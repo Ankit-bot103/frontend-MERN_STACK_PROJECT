@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";   // added Link
 import api from "../api/axios";
 import "../styles/auth.css";
 
@@ -117,6 +117,12 @@ const Register = () => {
           </button>
 
         </form>
+
+        {/* Added login link for better user flow */}
+        <p style={{ marginTop: "15px", textAlign: "center" }}>
+          Already have an account?{" "}
+          <Link to="/login">Login here</Link>
+        </p>
 
       </div>
 
