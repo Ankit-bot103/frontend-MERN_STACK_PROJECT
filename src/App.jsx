@@ -16,8 +16,8 @@ Concepts Used:
 */
 
 
-// Import React Router components used for defining routes
-import { Routes, Route } from "react-router-dom";
+// Import React Router components
+import { Routes, Route, useLocation } from "react-router-dom";
 
 
 // Import page components
@@ -27,7 +27,7 @@ import Register from "./pages/Register";
 import Books from "./pages/Books";
 
 
-// Import components used for authentication protection
+// Import authentication protection wrapper
 import ProtectedRoute from "./components/ProtectedRoute";
 
 
@@ -45,19 +45,32 @@ import "./styles/dashboard.css";
 APP COMPONENT
 ======================================================
 
-This is the root React component rendered by main.jsx.
-
 Responsibilities:
 1. Render Navbar globally
-2. Apply dashboard layout
+2. Show Sidebar only for authenticated pages
 3. Define application routes
-4. Protect authenticated routes
+4. Protect routes that require authentication
 */
 const App = () => {
 
   /*
-  JSX returned by App component
+  Detect current route
   */
+  const location = useLocation();
+
+
+  /*
+  Define public routes where sidebar should not appear
+  */
+  const publicRoutes = ["/", "/login", "/register"];
+
+
+  /*
+  Check if sidebar should be hidden
+  */
+  const hideSidebar = publicRoutes.includes(location.pathname);
+
+
   return (
 
     /*
@@ -86,8 +99,8 @@ const App = () => {
       <div className="dashboard-container">
 
 
-        {/* Sidebar navigation */}
-        <Sidebar />
+        {/* Sidebar only appears after login */}
+        {!hideSidebar && <Sidebar />}
 
 
         {/* Main content area where pages render */}
@@ -96,10 +109,7 @@ const App = () => {
 
           {/* --------------------------------------------------
              ROUTE DEFINITIONS
-             --------------------------------------------------
-
-             Each Route maps a URL path to a component
-          */}
+             -------------------------------------------------- */}
           <Routes>
 
 
@@ -124,10 +134,7 @@ const App = () => {
               path="/books"
               element={
                 <ProtectedRoute>
-
-                  {/* Books page component */}
                   <Books />
-
                 </ProtectedRoute>
               }
             />
