@@ -9,7 +9,7 @@ Adds:
 */
 
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom"; // added Link
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import "../styles/auth.css";
@@ -68,8 +68,7 @@ const Login = () => {
 
     setLoading(true);
 
-    setProgress(30); // start progress
-
+    setProgress(30);
 
     try {
 
@@ -78,14 +77,12 @@ const Login = () => {
         password: formData.password
       });
 
-      setProgress(70); // request succeeded
-
+      setProgress(70);
 
       // Save auth data
       login(res.data.token, res.data.user?.role || "user");
 
       setProgress(100);
-
 
       // Redirect to books page
       navigate("/books", {
@@ -146,7 +143,6 @@ const Login = () => {
 
         <form onSubmit={handleSubmit}>
 
-          {/* Email input */}
           <input
             name="identifier"
             type="email"
@@ -157,7 +153,6 @@ const Login = () => {
             required
           />
 
-          {/* Password input */}
           <input
             name="password"
             type="password"
@@ -168,7 +163,6 @@ const Login = () => {
             required
           />
 
-          {/* Login button */}
           <button
             className="btn btn-primary"
             type="submit"
@@ -187,6 +181,12 @@ const Login = () => {
           </button>
 
         </form>
+
+        {/* Added register link */}
+        <p style={{ marginTop: "15px", textAlign: "center" }}>
+          Don't have an account?{" "}
+          <Link to="/register">Register first</Link>
+        </p>
 
       </div>
 
