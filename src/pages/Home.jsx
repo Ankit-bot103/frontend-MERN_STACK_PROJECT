@@ -3,6 +3,9 @@
 // Import CSS styles specific to the Home (Hero) page
 import "../styles/home.css";
 
+// Import Link for navigation
+import { Link } from "react-router-dom";
+
 // Functional component for Home page
 const Home = () => {
   return (
@@ -14,7 +17,7 @@ const Home = () => {
 
         {/* Main heading of the application */}
         <h1 className="hero-title">
-          Book Management System
+          Welcome to Book Management System 📚
         </h1>
 
         {/* Short description explaining what the project is */}
@@ -50,10 +53,27 @@ const Home = () => {
 
         </div>
 
-        {/* Footer text prompting user action */}
+        {/* New onboarding message for users */}
         <p className="hero-footer">
-          Login to start managing books
+          New users must <strong>register first</strong>, then login to manage books.
         </p>
+
+        {/* Action buttons for Register and Login */}
+        <div style={{ marginTop: "20px" }}>
+
+          <Link to="/register">
+            <button className="auth-btn">
+              Register
+            </button>
+          </Link>
+
+          <Link to="/login">
+            <button className="auth-btn" style={{ marginLeft: "10px" }}>
+              Login
+            </button>
+          </Link>
+
+        </div>
 
       </div>
     </div>
